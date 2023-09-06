@@ -1,0 +1,29 @@
+Name: HorizonX
+Mode: dev   #options=dev|test|rt|pre|pro
+Host: 0.0.0.0
+Port: 8991
+
+
+
+Mysql:
+  DataSource: root:123456@tcp(127.0.0.1:3306)/horizonx?charset=utf8mb4&parseTime=true&loc=Local
+
+Redis:
+  Host: 127.0.0.1:6379
+
+#rpc
+UserRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
+
+
+Jwt: # 修改此处需要同步修改 rpc/identity 的配置文件
+  Issuer: HorizonX
+  AccessSecret: hduasd8dh8qdh8qhd8qd # 生成token的密钥
+  AccessExpire: 36000    # 生成token的有效期，时间单位为秒
+
+
+
+

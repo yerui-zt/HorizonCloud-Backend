@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import public "google/protobuf/timestamp.proto";
+
+
+package identity;
+option go_package="./identity";
+
+message IssueJWTReq {
+  int64 uid =1;
+  google.protobuf.Timestamp expire =2;
+}
+
+message IssueJWTResp {
+  string token =1;
+}
+
+message VerifyJWTReq {
+  string token =1;
+}
+
+message VerifyJWTResp {
+  bool valid =1;
+}
+
+message DeclineJWTReq {
+  string token =1;
+  int64 uid =2;
+}
+
+message DeclineJWTResp {
+  bool success =1;
+}
+
+service IdentityService {
+  rpc IssueJWT(IssueJWTReq) returns (IssueJWTResp);
+  rpc VerifyJWT(VerifyJWTReq) returns (VerifyJWTResp);
+  rpc DeclineJWT(DeclineJWTReq) returns (DeclineJWTResp);
+}
+
+
