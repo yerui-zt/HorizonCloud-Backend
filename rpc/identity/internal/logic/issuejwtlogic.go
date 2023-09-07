@@ -2,9 +2,11 @@ package logic
 
 import (
 	"HorizonX/common/jwt"
+	"HorizonX/common/xerr"
 	"HorizonX/rpc/identity/identity"
 	"HorizonX/rpc/identity/internal/svc"
 	"context"
+	"github.com/pkg/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -32,6 +34,7 @@ func (l *IssueJWTLogic) IssueJWT(in *identity.IssueJWTReq) (*identity.IssueJWTRe
 		)
 	if err != nil {
 		logx.Errorf("IssueJWTLogic.IssueJWT err: %v", err)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.JWT_ISSUE_ERROR), "IssueJWTLogic.IssueJWT err: %v", err)
 	}
 
 	return &identity.IssueJWTResp{

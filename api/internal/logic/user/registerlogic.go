@@ -3,6 +3,7 @@ package user
 import (
 	"HorizonX/rpc/user/user"
 	"context"
+	"github.com/pkg/errors"
 
 	"HorizonX/api/internal/svc"
 	"HorizonX/api/internal/types"
@@ -35,7 +36,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 		AffBy:     req.AffBy,
 	})
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "register error [email: %s]", req.Email)
 	}
 
 	return &types.RegisterResp{

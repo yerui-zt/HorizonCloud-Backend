@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 
 	"HorizonX/rpc/identity/identity"
@@ -28,14 +29,16 @@ func NewDeclineJWTLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Declin
 func (l *DeclineJWTLogic) DeclineJWT(in *identity.DeclineJWTReq) (*identity.DeclineJWTResp, error) {
 	// 将token加入黑名单
 	// key: jwt-blacklist:token value: uid
+	key := fmt.Sprintf("jwt-blacklist:%v", in.Token)
 	_, err := l.svcCtx.Redis.SetnxExCtx(
 		l.ctx,
-		fmt.Sprintf("jwt-blacklist:%s", in.Token),
+		key,
 		cast.ToString(in.Uid),
 		cast.ToInt(l.svcCtx.Config.Jwt.AccessExpire),
 	)
 	if err != nil {
-		return nil, err
+		logx.WithContext(l.ctx).Errorf("redis setnxex failed [key: %s]", key)
+		return nil, errors.Wrapf(err, "redis setnxex failed [key: %s]", key)
 	}
 
 	return &identity.DeclineJWTResp{

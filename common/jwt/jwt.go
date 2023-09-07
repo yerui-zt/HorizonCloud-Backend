@@ -2,6 +2,7 @@ package jwt
 
 import (
 	jwtpkg "github.com/golang-jwt/jwt/v5"
+	"github.com/spf13/cast"
 	"time"
 )
 
@@ -16,7 +17,7 @@ func NewJWT(key string) *JWT {
 }
 
 type GeneralUserToken struct {
-	UID int64 `json:"uid"`
+	UID string `json:"uid"`
 
 	jwtpkg.RegisteredClaims
 }
@@ -25,7 +26,7 @@ func (jwt *JWT) IssueGeneralUserToken(uid int64, expirePeriod int64, issuer stri
 	now := time.Now()
 
 	claims := GeneralUserToken{
-		UID: uid,
+		UID: cast.ToString(uid),
 
 		RegisteredClaims: jwtpkg.RegisteredClaims{
 			NotBefore: jwtpkg.NewNumericDate(now),

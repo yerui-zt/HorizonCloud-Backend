@@ -2,10 +2,12 @@ package logic
 
 import (
 	"HorizonX/common/cryptx"
+	"HorizonX/common/xerr"
 	"HorizonX/rpc/identity/identity"
 	"HorizonX/rpc/user/internal/svc"
 	"HorizonX/rpc/user/user"
 	"context"
+	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -29,13 +31,12 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	// 1.数据库查找用户
 	u, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, in.Email)
 	if err != nil {
-		// todo: 包装错误
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by email error [email: %s]", in.Email)
 	}
 
 	// 2. bcrpt比对密码
 	if cryptx.BcyptCheck(in.Password, u.Password) == false {
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.USER_PASSWORD_ERROR), "password error [email: %s]", in.Email)
 	}
 
 	// 3. 签发jwt

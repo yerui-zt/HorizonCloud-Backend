@@ -15,11 +15,14 @@ import (
 type (
 	LoginReq     = user.LoginReq
 	LoginResp    = user.LoginResp
+	LogoutReq    = user.LogoutReq
+	LogoutResp   = user.LogoutResp
 	RegisterReq  = user.RegisterReq
 	RegisterResp = user.RegisterResp
 
 	UserService interface {
 		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+		Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutResp, error)
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 	}
 
@@ -37,6 +40,11 @@ func NewUserService(cli zrpc.Client) UserService {
 func (m *defaultUserService) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.Login(ctx, in, opts...)
+}
+
+func (m *defaultUserService) Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutResp, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.Logout(ctx, in, opts...)
 }
 
 func (m *defaultUserService) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error) {

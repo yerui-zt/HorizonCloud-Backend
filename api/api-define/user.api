@@ -9,6 +9,10 @@ type (
         Token string `json:"token"`
     }
 
+    LoginOutResp struct {
+        Success bool `json:"success"`
+    }
+
     RegisterReq {
         Email string `json:"email" validate:"required,email"`
         Password string `json:"password" validate:"required,min=8,max=20"`
@@ -21,6 +25,7 @@ type (
     RegisterResp {
         Token string `json:"token"`
     }
+
 )
 
 // 公共接口，无需鉴权
@@ -34,4 +39,16 @@ service horizonx-api {
 
     @handler register
     post /register (RegisterReq) returns (RegisterResp)
+}
+
+// 需要鉴权的接口
+@server (
+    jwt: Jwt
+    prefix: /api/user
+    middleware: AuthMiddleware
+    group: user
+)
+service horizonx-api {
+    @handler logout
+    post /logout returns (LoginOutResp)
 }

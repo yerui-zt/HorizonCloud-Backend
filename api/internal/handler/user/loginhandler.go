@@ -3,9 +3,13 @@ package user
 import (
 	"net/http"
 
+	"HorizonX/common/result"
+	"HorizonX/common/validator"
+
 	"HorizonX/api/internal/logic/user"
 	"HorizonX/api/internal/svc"
 	"HorizonX/api/internal/types"
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
@@ -13,16 +17,17 @@ func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.LoginReq
 		if err := httpx.Parse(r, &req); err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
+			result.ParamErrorResult(r, w, err)
+			return
+		}
+
+		if errMsg, errCode := validator.Validate(req); errCode != 0 {
+			result.ParamErrorResult(r, w, errors.New(errMsg))
 			return
 		}
 
 		l := user.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		result.HttpResult(r, w, resp, err)
 	}
 }

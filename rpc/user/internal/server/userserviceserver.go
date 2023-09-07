@@ -27,6 +27,11 @@ func (s *UserServiceServer) Login(ctx context.Context, in *user.LoginReq) (*user
 	return l.Login(in)
 }
 
+func (s *UserServiceServer) Logout(ctx context.Context, in *user.LogoutReq) (*user.LogoutResp, error) {
+	l := logic.NewLogoutLogic(ctx, s.svcCtx)
+	return l.Logout(in)
+}
+
 func (s *UserServiceServer) Register(ctx context.Context, in *user.RegisterReq) (*user.RegisterResp, error) {
 	l := logic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)

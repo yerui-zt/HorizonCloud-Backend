@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"HorizonX/common/interceptor/rpcserver"
 	"HorizonX/rpc/user/internal/config"
 	"HorizonX/rpc/user/internal/server"
 	"HorizonX/rpc/user/internal/svc"
@@ -32,6 +33,8 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	s.AddUnaryInterceptors(rpcserver.LoggerInterceptor)
+
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

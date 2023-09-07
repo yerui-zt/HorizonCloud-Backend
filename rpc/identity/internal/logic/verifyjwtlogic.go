@@ -5,6 +5,7 @@ import (
 	"HorizonX/rpc/identity/internal/svc"
 	"context"
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,7 +30,7 @@ func (l *VerifyJWTLogic) VerifyJWT(in *identity.VerifyJWTReq) (*identity.VerifyJ
 	// key: jwt-blacklist:token value: uid
 	exist, err := l.svcCtx.Redis.ExistsCtx(l.ctx, fmt.Sprintf("jwt-blacklist:%s", in.Token))
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "redis exists failed [key: %s]", fmt.Sprintf("jwt-blacklist:%s", in.Token))
 	}
 
 	return &identity.VerifyJWTResp{

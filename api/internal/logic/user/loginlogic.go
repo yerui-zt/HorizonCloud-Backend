@@ -3,6 +3,7 @@ package user
 import (
 	"HorizonX/rpc/user/user"
 	"context"
+	"github.com/pkg/errors"
 
 	"HorizonX/api/internal/svc"
 	"HorizonX/api/internal/types"
@@ -30,8 +31,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 		Password: req.Password,
 	})
 	if err != nil {
-		// todo: 状态码处理
-		return nil, err
+		return nil, errors.Wrapf(err, "login error [email: %s]", req.Email)
 	}
 
 	return &types.LoginResp{

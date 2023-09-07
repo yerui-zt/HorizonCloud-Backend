@@ -17,7 +17,11 @@ UserRPC:
     Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
-
+IdentityRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: identity.rpc
 
 Jwt: # 修改此处需要同步修改 rpc/identity 的配置文件
   Issuer: HorizonX

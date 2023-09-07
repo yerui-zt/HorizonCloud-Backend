@@ -1,8 +1,10 @@
 package main
 
 import (
+	"HorizonX/common/result"
 	"flag"
 	"fmt"
+	"net/http"
 
 	"HorizonX/api/internal/config"
 	"HorizonX/api/internal/handler"
@@ -20,7 +22,11 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf,
+		rest.WithUnauthorizedCallback(
+			func(w http.ResponseWriter, r *http.Request, err error) {
+				result.AuthHttpResult(r, w, nil, err)
+			}))
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)
