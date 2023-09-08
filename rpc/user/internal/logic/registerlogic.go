@@ -61,7 +61,7 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, erro
 		Address:   in.Address,
 		AffBy:     in.AffBy,
 	}
-	result, err := l.svcCtx.UserModel.Insert(l.ctx, insertUser)
+	result, err := l.svcCtx.UserModel.Insert(l.ctx, nil, insertUser)
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "create user [email: %s] failed [Insert failed]", in.Email)
 	}

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package vm;
+option go_package="./vm";
+
+message VMGroup{
+    int64 id = 1;
+    string name = 2;
+    string region = 3;
+}
+
+message GetAllVMGroupsResp{
+    repeated VMGroup vm_groups = 1;
+}
+
+
+message GetVMGroupByRegionReq{
+    string region = 1;
+}
+
+message GetVMGroupByRegionResp{
+    repeated VMGroup groups = 1;
+}
+
+message VMPlan{
+    int64 id = 1;
+    string name = 2;
+    int64 stock = 3;
+    int64 vcpu = 4;
+    int64 memory = 5;
+    int64 disk = 6;
+    int64 data_transfer = 7;
+    int64 bandwidth = 8;
+    int64 ipv4_num = 9;
+    int64 ipv6_num = 10;
+    int64 monthly_price = 11;
+    int64 quarterly_price = 12;
+    int64 semi_annually_price = 13;
+    int64 annually_price = 14;
+}
+
+message GetVMPlanByGroupIdReq{
+    int64 group_id = 1;
+}
+
+message GetVMPlanByGroupIdResp{
+    repeated VMPlan plans = 1;
+}
+
+message VMImage{
+    int64 id = 1;
+    string name = 2;
+    string release = 3;
+}
+
+message GetImageResp{
+    repeated VMImage images = 1;
+}
+
+service VMService {
+    rpc GetAllVMGroups(GetAllVMGroupsResp) returns (GetAllVMGroupsResp);
+    rpc GetVMGroupByRegion(GetVMGroupByRegionReq) returns (GetVMGroupByRegionResp);
+    rpc GetVMPlanByGroupId(GetVMPlanByGroupIdReq) returns (GetVMPlanByGroupIdResp);
+    rpc GetImage(GetImageResp) returns (GetImageResp);
+}

@@ -1,0 +1,82 @@
+syntax = "v1"
+
+type (
+    VMGroup struct {
+        Id int64 `json:"group_id"`
+        Name string `json:"group_name"`
+        Region string `json:"region"`
+    }
+    // 获取所有组
+    GetAllVMGroupsResp struct {
+        Groups []VMGroup `json:"groups"`
+    }
+
+    // 根据地区获取组
+    GetVMGroupByRegionReq struct {
+        Region string `path:"region" validate:"required"`
+    }
+    GetVMGroupByRegionResp struct {
+        Groups []VMGroup `json:"groups"`
+    }
+
+    VMPlan struct {
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        Stock int64 `json:"stock"`
+        Vcpu int64 `json:"vcpu"`
+        Memory int64 `json:"memory"`
+        Disk int64 `json:"disk"`
+        DataTransfer int64 `json:"data_transfer"`
+        Bandwidth int64 `json:"bandwidth"`
+        Ipv4Num int64 `json:"ipv4_num"`
+        Ipv6Num int64 `json:"ipv6_num"`
+        MonthlyPrice int64 `json:"monthly_price"`
+        QuarterlyPrice int64 `json:"quarterly_price"`
+        SemiAnnuallyPrice int64 `json:"semi_annually_price"`
+        AnnuallyPrice int64 `json:"annually_price"`
+    }
+
+
+    // 根据组ID获取Plan
+    GetVMPlanByGroupIdReq struct {
+        GroupId int64 `path:"group_id" validate:"required"`
+    }
+    GetVMPlanByGroupIdResp struct {
+        Plans []VMPlan `json:"plans"`
+    }
+
+    VMImage struct {
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        Release string `json:"release"`
+    }
+
+    // 获取系统模版
+    GetImageResp struct {
+        Images []VMImage `json:"images"`
+    }
+
+)
+
+
+@server (
+    prefix: /api/vm
+    group: vm
+)
+service horizonx-api {
+   // 获取所有组
+    @handler getAllVMGroups
+    get /groups returns (GetAllVMGroupsResp)
+
+    // 根据地区获取组
+    @handler getVMGroupByRegion
+    get /groups/:region (GetVMGroupByRegionReq) returns (GetVMGroupByRegionResp)
+
+    // 根据组ID获取Plan
+    @handler getVMPlanByGroupId
+    get /plans/:group_id (GetVMPlanByGroupIdReq) returns (GetVMPlanByGroupIdResp)
+
+    // 获取系统模版
+    @handler getImage
+    get /images returns (GetImageResp)
+}

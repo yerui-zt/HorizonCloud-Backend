@@ -27,3 +27,56 @@ type RegisterReq struct {
 type RegisterResp struct {
 	Token string `json:"token"`
 }
+
+type VMGroup struct {
+	Id     int64  `json:"group_id"`
+	Name   string `json:"group_name"`
+	Region string `json:"region"`
+}
+
+type GetAllVMGroupsResp struct {
+	Groups []VMGroup `json:"groups"`
+}
+
+type GetVMGroupByRegionReq struct {
+	Region string `path:"region" validate:"required"`
+}
+
+type GetVMGroupByRegionResp struct {
+	Groups []VMGroup `json:"groups"`
+}
+
+type VMPlan struct {
+	Id                int64  `json:"id"`
+	Name              string `json:"name"`
+	Stock             int64  `json:"stock"`
+	Vcpu              int64  `json:"vcpu"`
+	Memory            int64  `json:"memory"`
+	Disk              int64  `json:"disk"`
+	DataTransfer      int64  `json:"data_transfer"`
+	Bandwidth         int64  `json:"bandwidth"`
+	Ipv4Num           int64  `json:"ipv4_num"`
+	Ipv6Num           int64  `json:"ipv6_num"`
+	MonthlyPrice      int64  `json:"monthly_price"`
+	QuarterlyPrice    int64  `json:"quarterly_price"`
+	SemiAnnuallyPrice int64  `json:"semi_annually_price"`
+	AnnuallyPrice     int64  `json:"annually_price"`
+}
+
+type GetVMPlanByGroupIdReq struct {
+	GroupId int64 `path:"group_id" validate:"required"`
+}
+
+type GetVMPlanByGroupIdResp struct {
+	Plans []VMPlan `json:"plans"`
+}
+
+type VMImage struct {
+	Id      int64  `json:"id"`
+	Name    string `json:"name"`
+	Release string `json:"release"`
+}
+
+type GetImageResp struct {
+	Images []VMImage `json:"images"`
+}

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	user "HorizonX/api/internal/handler/user"
+	vm "HorizonX/api/internal/handler/vm"
 	"HorizonX/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -40,5 +41,31 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		),
 		rest.WithJwt(serverCtx.Config.Jwt.AccessSecret),
 		rest.WithPrefix("/api/user"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/groups",
+				Handler: vm.GetAllVMGroupsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/groups/:region",
+				Handler: vm.GetVMGroupByRegionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/plans/:group_id",
+				Handler: vm.GetVMPlanByGroupIdHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/images",
+				Handler: vm.GetImageHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/vm"),
 	)
 }

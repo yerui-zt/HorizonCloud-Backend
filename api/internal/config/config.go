@@ -8,6 +8,10 @@ import (
 type Config struct {
 	rest.RestConf
 
+	Mysql struct {
+		DataSource string
+	}
+
 	UserRPC     zrpc.RpcClientConf
 	IdentityRPC zrpc.RpcClientConf
 

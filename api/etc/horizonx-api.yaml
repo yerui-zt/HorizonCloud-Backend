@@ -3,7 +3,8 @@ Mode: dev   #options=dev|test|rt|pre|pro
 Host: 0.0.0.0
 Port: 8991
 
-
+Log:
+  Encoding: plain #options=plain|json ， 生产环境建议使用json
 
 Mysql:
   DataSource: root:123456@tcp(127.0.0.1:3306)/horizonx?charset=utf8mb4&parseTime=true&loc=Local

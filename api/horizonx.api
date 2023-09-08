@@ -8,3 +8,4 @@ info (
 )
 
 import "api-define/user.api"
+import "api-define/vm.api"
