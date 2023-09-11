@@ -3,6 +3,8 @@ syntax = "proto3";
 package order;
 option go_package="./order";
 
+
+
 message CreateVMDeployOrderReq {
   int64 uid =1;
   int64 vm_group_id =2;

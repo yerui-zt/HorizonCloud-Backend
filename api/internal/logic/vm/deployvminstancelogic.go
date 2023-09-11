@@ -1,7 +1,9 @@
 package vm
 
 import (
+	"HorizonX/rpc/order/orderservice"
 	"context"
+	"github.com/spf13/cast"
 
 	"HorizonX/api/internal/svc"
 	"HorizonX/api/internal/types"
@@ -24,7 +26,19 @@ func NewDeployVMInstanceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *DeployVMInstanceLogic) DeployVMInstance(req *types.DeployVMInstanceReq) (resp *types.DeployVMInstanceResp, err error) {
-	// todo: add your logic here and delete this line
+	uid := l.ctx.Value("uid").(string)
+	rpcResp, err := l.svcCtx.OrderRPC.CreateVMDeployOrder(l.ctx, &orderservice.CreateVMDeployOrderReq{
+		Uid:          cast.ToInt64(uid),
+		VmGroupId:    req.GroupId,
+		PlanId:       req.PlanID,
+		Image:        req.Image,
+		BillingCycle: req.BillingCycle,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	return &types.DeployVMInstanceResp{
+		OrderNo: rpcResp.OrderNo,
+	}, nil
 }

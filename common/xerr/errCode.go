@@ -15,6 +15,13 @@ func init() {
 	// 用户模块
 	code[USER_PASSWORD_ERROR] = 400
 	code[USER_EXIST_ERROR] = 400
+	code[USER_NOT_FOUND_ERROR] = 400
+
+	// 订单模块
+	code[ORDER_CREATE_ERROR] = 500
+	code[ORDER_PLAN_NOT_FOUND] = 400
+	code[ORDER_VM_GROUP_NOT_FOUND] = 400
+	code[ORDER_VM_IMAGE_NOT_FOUND] = 400
 }
 
 // MapErrMsg 根据错误类型返回错误码

@@ -39,7 +39,7 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, erro
 	}
 
 	// 2. 检查affBy是否真实
-	affUser, err := l.svcCtx.UserModel.FindOne(l.ctx, in.AffBy)
+	affUser, err := l.svcCtx.UserModel.FindOne(l.ctx, nil, in.AffBy)
 	if err != nil && err != model.ErrNotFound {
 		logx.WithContext(l.ctx).Errorf("find aff_by user by id error [id: %d]", in.AffBy)
 	}
