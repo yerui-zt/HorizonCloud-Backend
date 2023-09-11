@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package order;
+option go_package="./order";
+
+message CreateVMDeployOrderReq {
+  int64 uid =1;
+  int64 vm_group_id =2;
+  int64 plan_id =3;
+  string image =4;
+  string billing_cycle =5;
+}
+
+message CreateVMDeployOrderResp {
+  string order_no =1;
+}
+
+service OrderService {
+  // 创建虚拟机部署订单
+  rpc CreateVMDeployOrder(CreateVMDeployOrderReq) returns (CreateVMDeployOrderResp) {}
+}
