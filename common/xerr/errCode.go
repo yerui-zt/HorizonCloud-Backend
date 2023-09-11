@@ -19,6 +19,7 @@ func init() {
 
 	// 订单模块
 	code[ORDER_CREATE_ERROR] = 500
+	code[ORDER_NOT_FOUND] = 400
 	code[ORDER_PLAN_NOT_FOUND] = 400
 	code[ORDER_VM_GROUP_NOT_FOUND] = 400
 	code[ORDER_VM_IMAGE_NOT_FOUND] = 400

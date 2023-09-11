@@ -1,0 +1,68 @@
+syntax = "v1"
+
+type (
+    GetOrderDetailItem struct {
+        Id       int64 `json:"id"`
+        OrderId  int64 `json:"orderId"`
+        Name     string `json:"name"`
+        Content  string `json:"content"`
+        Quantity int64 `json:"quantity"`
+        Amount   int64 `json:"amount"`
+    }
+
+    OrderPaymentMethod struct {
+        Name string `json:"name"`
+        Type string `json:"type"`
+    }
+)
+
+type (
+    GetOrderDetailReq struct {
+        OrderNo string `path:"orderNo" validate:"required"`
+    }
+    GetOrderDetailResp struct {
+        Id          int64 `json:"id"`
+        CreateTime string `json:"createTime"`
+        UpdateTime  string `json:"updateTime"`
+        DueDate     string `json:"dueDate"`
+        OrderNo     string `json:"orderNo"`
+        UserId      int64 `json:"userId"`
+        TotalAmount int64 `json:"totalAmount"`
+        Status      string `json:"status"`
+        Items       []GetOrderDetailItem `json:"items"`
+    }
+
+    PayOrderReq struct {
+        OrderNo string `path:"orderNo" validate:"required"`
+        Method  string `json:"method" validate:"required"`
+    }
+    PayOrderResp struct {
+        Url     string `json:"url"`
+    }
+
+    GetOrderPaymentMethodReq struct {
+        OrderNo string `path:"orderNo" validate:"required"`
+    }
+    GetOrderPaymentMethodResp struct {
+        Methods []OrderPaymentMethod `json:"methods"`
+    }
+)
+
+// 需要鉴权的接口
+@server (
+    jwt: Jwt
+    prefix: /api/order
+    middleware: AuthMiddleware
+    group: order
+)
+service horizonx-api {
+    @handler getOrderDetail
+    get /:orderNo (GetOrderDetailReq) returns (GetOrderDetailResp)
+
+    @handler getOrderPaymentMethod
+    get /:orderNo/paymentMethod (GetOrderPaymentMethodReq) returns (GetOrderPaymentMethodResp)
+
+    @handler payOrder
+    post /:orderNo/pay (PayOrderReq) returns (PayOrderResp)
+}
+

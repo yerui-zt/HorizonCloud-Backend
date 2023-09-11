@@ -146,6 +146,502 @@ func (x *CreateVMDeployOrderResp) GetOrderNo() string {
 	return ""
 }
 
+type OrderDetailItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id       int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	OrderId  int64  `protobuf:"varint,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	Name     string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Content  string `protobuf:"bytes,4,opt,name=content,proto3" json:"content,omitempty"`
+	Quantity int64  `protobuf:"varint,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Amount   int64  `protobuf:"varint,6,opt,name=amount,proto3" json:"amount,omitempty"`
+}
+
+func (x *OrderDetailItem) Reset() {
+	*x = OrderDetailItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OrderDetailItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderDetailItem) ProtoMessage() {}
+
+func (x *OrderDetailItem) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderDetailItem.ProtoReflect.Descriptor instead.
+func (*OrderDetailItem) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *OrderDetailItem) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *OrderDetailItem) GetOrderId() int64 {
+	if x != nil {
+		return x.OrderId
+	}
+	return 0
+}
+
+func (x *OrderDetailItem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *OrderDetailItem) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *OrderDetailItem) GetQuantity() int64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *OrderDetailItem) GetAmount() int64 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+type GetOrderDetailItemReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	OrderNo string `protobuf:"bytes,1,opt,name=order_no,json=orderNo,proto3" json:"order_no,omitempty"`
+}
+
+func (x *GetOrderDetailItemReq) Reset() {
+	*x = GetOrderDetailItemReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetOrderDetailItemReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrderDetailItemReq) ProtoMessage() {}
+
+func (x *GetOrderDetailItemReq) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrderDetailItemReq.ProtoReflect.Descriptor instead.
+func (*GetOrderDetailItemReq) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetOrderDetailItemReq) GetOrderNo() string {
+	if x != nil {
+		return x.OrderNo
+	}
+	return ""
+}
+
+type GetOrderDetailItemResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id          int64              `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	CreateTime  string             `protobuf:"bytes,2,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	UpdateTime  string             `protobuf:"bytes,3,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
+	DueDate     string             `protobuf:"bytes,4,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"`
+	OrderNo     string             `protobuf:"bytes,5,opt,name=order_no,json=orderNo,proto3" json:"order_no,omitempty"`
+	UserId      int64              `protobuf:"varint,6,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	TotalAmount int64              `protobuf:"varint,7,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	Status      string             `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
+	Items       []*OrderDetailItem `protobuf:"bytes,9,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (x *GetOrderDetailItemResp) Reset() {
+	*x = GetOrderDetailItemResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetOrderDetailItemResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrderDetailItemResp) ProtoMessage() {}
+
+func (x *GetOrderDetailItemResp) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrderDetailItemResp.ProtoReflect.Descriptor instead.
+func (*GetOrderDetailItemResp) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetOrderDetailItemResp) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetOrderDetailItemResp) GetCreateTime() string {
+	if x != nil {
+		return x.CreateTime
+	}
+	return ""
+}
+
+func (x *GetOrderDetailItemResp) GetUpdateTime() string {
+	if x != nil {
+		return x.UpdateTime
+	}
+	return ""
+}
+
+func (x *GetOrderDetailItemResp) GetDueDate() string {
+	if x != nil {
+		return x.DueDate
+	}
+	return ""
+}
+
+func (x *GetOrderDetailItemResp) GetOrderNo() string {
+	if x != nil {
+		return x.OrderNo
+	}
+	return ""
+}
+
+func (x *GetOrderDetailItemResp) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetOrderDetailItemResp) GetTotalAmount() int64 {
+	if x != nil {
+		return x.TotalAmount
+	}
+	return 0
+}
+
+func (x *GetOrderDetailItemResp) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *GetOrderDetailItemResp) GetItems() []*OrderDetailItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type PayOrderReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	OrderNo string `protobuf:"bytes,1,opt,name=order_no,json=orderNo,proto3" json:"order_no,omitempty"`
+	Method  string `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
+}
+
+func (x *PayOrderReq) Reset() {
+	*x = PayOrderReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PayOrderReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PayOrderReq) ProtoMessage() {}
+
+func (x *PayOrderReq) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PayOrderReq.ProtoReflect.Descriptor instead.
+func (*PayOrderReq) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PayOrderReq) GetOrderNo() string {
+	if x != nil {
+		return x.OrderNo
+	}
+	return ""
+}
+
+func (x *PayOrderReq) GetMethod() string {
+	if x != nil {
+		return x.Method
+	}
+	return ""
+}
+
+type PayOrderResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+}
+
+func (x *PayOrderResp) Reset() {
+	*x = PayOrderResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PayOrderResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PayOrderResp) ProtoMessage() {}
+
+func (x *PayOrderResp) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PayOrderResp.ProtoReflect.Descriptor instead.
+func (*PayOrderResp) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *PayOrderResp) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+type OrderPaymentMethod struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+}
+
+func (x *OrderPaymentMethod) Reset() {
+	*x = OrderPaymentMethod{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OrderPaymentMethod) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderPaymentMethod) ProtoMessage() {}
+
+func (x *OrderPaymentMethod) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderPaymentMethod.ProtoReflect.Descriptor instead.
+func (*OrderPaymentMethod) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OrderPaymentMethod) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *OrderPaymentMethod) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+type GetOrderPaymentMethodReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	OrderNo string `protobuf:"bytes,1,opt,name=order_no,json=orderNo,proto3" json:"order_no,omitempty"`
+}
+
+func (x *GetOrderPaymentMethodReq) Reset() {
+	*x = GetOrderPaymentMethodReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetOrderPaymentMethodReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrderPaymentMethodReq) ProtoMessage() {}
+
+func (x *GetOrderPaymentMethodReq) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrderPaymentMethodReq.ProtoReflect.Descriptor instead.
+func (*GetOrderPaymentMethodReq) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetOrderPaymentMethodReq) GetOrderNo() string {
+	if x != nil {
+		return x.OrderNo
+	}
+	return ""
+}
+
+type GetOrderPaymentMethodResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Methods []*OrderPaymentMethod `protobuf:"bytes,1,rep,name=methods,proto3" json:"methods,omitempty"`
+}
+
+func (x *GetOrderPaymentMethodResp) Reset() {
+	*x = GetOrderPaymentMethodResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_order_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetOrderPaymentMethodResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrderPaymentMethodResp) ProtoMessage() {}
+
+func (x *GetOrderPaymentMethodResp) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrderPaymentMethodResp.ProtoReflect.Descriptor instead.
+func (*GetOrderPaymentMethodResp) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetOrderPaymentMethodResp) GetMethods() []*OrderPaymentMethod {
+	if x != nil {
+		return x.Methods
+	}
+	return nil
+}
+
 var File_order_proto protoreflect.FileDescriptor
 
 var file_order_proto_rawDesc = []byte{
@@ -163,15 +659,79 @@ var file_order_proto_rawDesc = []byte{
 	0x43, 0x79, 0x63, 0x6c, 0x65, 0x22, 0x34, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x56,
 	0x4d, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70,
 	0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x6e, 0x6f, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x4e, 0x6f, 0x32, 0x66, 0x0a, 0x0c, 0x4f,
-	0x72, 0x64, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x56, 0x0a, 0x13, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x56, 0x4d, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x72, 0x64,
-	0x65, 0x72, 0x12, 0x1d, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x56, 0x4d, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65,
-	0x71, 0x1a, 0x1e, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
-	0x56, 0x4d, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x73,
-	0x70, 0x22, 0x00, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x4e, 0x6f, 0x22, 0x9e, 0x01, 0x0a, 0x0f,
+	0x4f, 0x72, 0x64, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x49, 0x74, 0x65, 0x6d, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x18,
+	0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x71, 0x75, 0x61, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x08, 0x71, 0x75, 0x61, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x32, 0x0a, 0x15,
+	0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x49, 0x74,
+	0x65, 0x6d, 0x52, 0x65, 0x71, 0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x6e,
+	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x4e, 0x6f,
+	0x22, 0xa2, 0x02, 0x0a, 0x16, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x44, 0x65, 0x74,
+	0x61, 0x69, 0x6c, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x12, 0x0e, 0x0a, 0x02, 0x69,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x1f, 0x0a, 0x0b,
+	0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x19, 0x0a,
+	0x08, 0x64, 0x75, 0x65, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x07, 0x64, 0x75, 0x65, 0x44, 0x61, 0x74, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65,
+	0x72, 0x5f, 0x6e, 0x6f, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65,
+	0x72, 0x4e, 0x6f, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x06,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c,
+	0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x07, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x0b, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12,
+	0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x2c, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73,
+	0x18, 0x09, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e, 0x4f,
+	0x72, 0x64, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x05,
+	0x69, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x40, 0x0a, 0x0b, 0x50, 0x61, 0x79, 0x4f, 0x72, 0x64, 0x65,
+	0x72, 0x52, 0x65, 0x71, 0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x6e, 0x6f,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x4e, 0x6f, 0x12,
+	0x16, 0x0a, 0x06, 0x6d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x6d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x22, 0x20, 0x0a, 0x0c, 0x50, 0x61, 0x79, 0x4f, 0x72,
+	0x64, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72, 0x6c, 0x22, 0x3c, 0x0a, 0x12, 0x4f, 0x72, 0x64,
+	0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x22, 0x35, 0x0a, 0x18, 0x47, 0x65, 0x74, 0x4f, 0x72,
+	0x64, 0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64,
+	0x52, 0x65, 0x71, 0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x5f, 0x6e, 0x6f, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x4e, 0x6f, 0x22, 0x50,
+	0x0a, 0x19, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x52, 0x65, 0x73, 0x70, 0x12, 0x33, 0x0a, 0x07, 0x6d,
+	0x65, 0x74, 0x68, 0x6f, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x6f,
+	0x72, 0x64, 0x65, 0x72, 0x2e, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x52, 0x07, 0x6d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x73,
+	0x32, 0xc8, 0x02, 0x0a, 0x0c, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x12, 0x54, 0x0a, 0x13, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x56, 0x4d, 0x44, 0x65, 0x70,
+	0x6c, 0x6f, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x12, 0x1d, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72,
+	0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x56, 0x4d, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f,
+	0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x71, 0x1a, 0x1e, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x56, 0x4d, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x4f, 0x72,
+	0x64, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x12, 0x51, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x4f, 0x72,
+	0x64, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x1c, 0x2e,
+	0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x44, 0x65,
+	0x74, 0x61, 0x69, 0x6c, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x71, 0x1a, 0x1d, 0x2e, 0x6f, 0x72,
+	0x64, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61,
+	0x69, 0x6c, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x12, 0x33, 0x0a, 0x08, 0x50, 0x61,
+	0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x12, 0x12, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x2e, 0x50,
+	0x61, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x71, 0x1a, 0x13, 0x2e, 0x6f, 0x72, 0x64,
+	0x65, 0x72, 0x2e, 0x50, 0x61, 0x79, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x12,
+	0x5a, 0x0a, 0x15, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65,
+	0x6e, 0x74, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x12, 0x1f, 0x2e, 0x6f, 0x72, 0x64, 0x65, 0x72,
+	0x2e, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74,
+	0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x52, 0x65, 0x71, 0x1a, 0x20, 0x2e, 0x6f, 0x72, 0x64, 0x65,
+	0x72, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x52, 0x65, 0x73, 0x70, 0x42, 0x09, 0x5a, 0x07, 0x2e,
+	0x2f, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -186,19 +746,35 @@ func file_order_proto_rawDescGZIP() []byte {
 	return file_order_proto_rawDescData
 }
 
-var file_order_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_order_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_order_proto_goTypes = []interface{}{
-	(*CreateVMDeployOrderReq)(nil),  // 0: order.CreateVMDeployOrderReq
-	(*CreateVMDeployOrderResp)(nil), // 1: order.CreateVMDeployOrderResp
+	(*CreateVMDeployOrderReq)(nil),    // 0: order.CreateVMDeployOrderReq
+	(*CreateVMDeployOrderResp)(nil),   // 1: order.CreateVMDeployOrderResp
+	(*OrderDetailItem)(nil),           // 2: order.OrderDetailItem
+	(*GetOrderDetailItemReq)(nil),     // 3: order.GetOrderDetailItemReq
+	(*GetOrderDetailItemResp)(nil),    // 4: order.GetOrderDetailItemResp
+	(*PayOrderReq)(nil),               // 5: order.PayOrderReq
+	(*PayOrderResp)(nil),              // 6: order.PayOrderResp
+	(*OrderPaymentMethod)(nil),        // 7: order.OrderPaymentMethod
+	(*GetOrderPaymentMethodReq)(nil),  // 8: order.GetOrderPaymentMethodReq
+	(*GetOrderPaymentMethodResp)(nil), // 9: order.GetOrderPaymentMethodResp
 }
 var file_order_proto_depIdxs = []int32{
-	0, // 0: order.OrderService.CreateVMDeployOrder:input_type -> order.CreateVMDeployOrderReq
-	1, // 1: order.OrderService.CreateVMDeployOrder:output_type -> order.CreateVMDeployOrderResp
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: order.GetOrderDetailItemResp.items:type_name -> order.OrderDetailItem
+	7, // 1: order.GetOrderPaymentMethodResp.methods:type_name -> order.OrderPaymentMethod
+	0, // 2: order.OrderService.CreateVMDeployOrder:input_type -> order.CreateVMDeployOrderReq
+	3, // 3: order.OrderService.GetOrderDetailItem:input_type -> order.GetOrderDetailItemReq
+	5, // 4: order.OrderService.PayOrder:input_type -> order.PayOrderReq
+	8, // 5: order.OrderService.GetOrderPaymentMethod:input_type -> order.GetOrderPaymentMethodReq
+	1, // 6: order.OrderService.CreateVMDeployOrder:output_type -> order.CreateVMDeployOrderResp
+	4, // 7: order.OrderService.GetOrderDetailItem:output_type -> order.GetOrderDetailItemResp
+	6, // 8: order.OrderService.PayOrder:output_type -> order.PayOrderResp
+	9, // 9: order.OrderService.GetOrderPaymentMethod:output_type -> order.GetOrderPaymentMethodResp
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_order_proto_init() }
@@ -231,6 +807,102 @@ func file_order_proto_init() {
 				return nil
 			}
 		}
+		file_order_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OrderDetailItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetOrderDetailItemReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetOrderDetailItemResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PayOrderReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PayOrderResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OrderPaymentMethod); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetOrderPaymentMethodReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_order_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetOrderPaymentMethodResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -238,7 +910,7 @@ func file_order_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_order_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

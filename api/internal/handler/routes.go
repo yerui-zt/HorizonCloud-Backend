@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	order "HorizonX/api/internal/handler/order"
 	user "HorizonX/api/internal/handler/user"
 	vm "HorizonX/api/internal/handler/vm"
 	"HorizonX/api/internal/svc"
@@ -82,5 +83,30 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		),
 		rest.WithJwt(serverCtx.Config.Jwt.AccessSecret),
 		rest.WithPrefix("/api/vm"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/:orderNo",
+					Handler: order.GetOrderDetailHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/:orderNo/paymentMethod",
+					Handler: order.GetOrderPaymentMethodHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/:orderNo/pay",
+					Handler: order.PayOrderHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithJwt(serverCtx.Config.Jwt.AccessSecret),
+		rest.WithPrefix("/api/order"),
 	)
 }

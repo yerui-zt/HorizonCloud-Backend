@@ -13,12 +13,26 @@ import (
 )
 
 type (
-	CreateVMDeployOrderReq  = order.CreateVMDeployOrderReq
-	CreateVMDeployOrderResp = order.CreateVMDeployOrderResp
+	CreateVMDeployOrderReq    = order.CreateVMDeployOrderReq
+	CreateVMDeployOrderResp   = order.CreateVMDeployOrderResp
+	GetOrderDetailItemReq     = order.GetOrderDetailItemReq
+	GetOrderDetailItemResp    = order.GetOrderDetailItemResp
+	GetOrderPaymentMethodReq  = order.GetOrderPaymentMethodReq
+	GetOrderPaymentMethodResp = order.GetOrderPaymentMethodResp
+	OrderDetailItem           = order.OrderDetailItem
+	OrderPaymentMethod        = order.OrderPaymentMethod
+	PayOrderReq               = order.PayOrderReq
+	PayOrderResp              = order.PayOrderResp
 
 	OrderService interface {
 		// 创建虚拟机部署订单
 		CreateVMDeployOrder(ctx context.Context, in *CreateVMDeployOrderReq, opts ...grpc.CallOption) (*CreateVMDeployOrderResp, error)
+		// 获取订单详情
+		GetOrderDetailItem(ctx context.Context, in *GetOrderDetailItemReq, opts ...grpc.CallOption) (*GetOrderDetailItemResp, error)
+		// 支付订单
+		PayOrder(ctx context.Context, in *PayOrderReq, opts ...grpc.CallOption) (*PayOrderResp, error)
+		// 获取订单支付方式
+		GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error)
 	}
 
 	defaultOrderService struct {
@@ -36,4 +50,22 @@ func NewOrderService(cli zrpc.Client) OrderService {
 func (m *defaultOrderService) CreateVMDeployOrder(ctx context.Context, in *CreateVMDeployOrderReq, opts ...grpc.CallOption) (*CreateVMDeployOrderResp, error) {
 	client := order.NewOrderServiceClient(m.cli.Conn())
 	return client.CreateVMDeployOrder(ctx, in, opts...)
+}
+
+// 获取订单详情
+func (m *defaultOrderService) GetOrderDetailItem(ctx context.Context, in *GetOrderDetailItemReq, opts ...grpc.CallOption) (*GetOrderDetailItemResp, error) {
+	client := order.NewOrderServiceClient(m.cli.Conn())
+	return client.GetOrderDetailItem(ctx, in, opts...)
+}
+
+// 支付订单
+func (m *defaultOrderService) PayOrder(ctx context.Context, in *PayOrderReq, opts ...grpc.CallOption) (*PayOrderResp, error) {
+	client := order.NewOrderServiceClient(m.cli.Conn())
+	return client.PayOrder(ctx, in, opts...)
+}
+
+// 获取订单支付方式
+func (m *defaultOrderService) GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error) {
+	client := order.NewOrderServiceClient(m.cli.Conn())
+	return client.GetOrderPaymentMethod(ctx, in, opts...)
 }

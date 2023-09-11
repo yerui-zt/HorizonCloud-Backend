@@ -91,3 +91,50 @@ type DeployVMInstanceReq struct {
 type DeployVMInstanceResp struct {
 	OrderNo string `json:"order_no"`
 }
+
+type GetOrderDetailItem struct {
+	Id       int64  `json:"id"`
+	OrderId  int64  `json:"orderId"`
+	Name     string `json:"name"`
+	Content  string `json:"content"`
+	Quantity int64  `json:"quantity"`
+	Amount   int64  `json:"amount"`
+}
+
+type OrderPaymentMethod struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+type GetOrderDetailReq struct {
+	OrderNo string `path:"orderNo" validate:"required"`
+}
+
+type GetOrderDetailResp struct {
+	Id          int64                `json:"id"`
+	CreateTime  string               `json:"createTime"`
+	UpdateTime  string               `json:"updateTime"`
+	DueDate     string               `json:"dueDate"`
+	OrderNo     string               `json:"orderNo"`
+	UserId      int64                `json:"userId"`
+	TotalAmount int64                `json:"totalAmount"`
+	Status      string               `json:"status"`
+	Items       []GetOrderDetailItem `json:"items"`
+}
+
+type PayOrderReq struct {
+	OrderNo string `path:"orderNo" validate:"required"`
+	Method  string `json:"method" validate:"required"`
+}
+
+type PayOrderResp struct {
+	Url string `json:"url"`
+}
+
+type GetOrderPaymentMethodReq struct {
+	OrderNo string `path:"orderNo" validate:"required"`
+}
+
+type GetOrderPaymentMethodResp struct {
+	Methods []OrderPaymentMethod `json:"methods"`
+}

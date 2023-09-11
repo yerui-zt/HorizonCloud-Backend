@@ -24,6 +24,12 @@ const _ = grpc.SupportPackageIsVersion7
 type OrderServiceClient interface {
 	// 创建虚拟机部署订单
 	CreateVMDeployOrder(ctx context.Context, in *CreateVMDeployOrderReq, opts ...grpc.CallOption) (*CreateVMDeployOrderResp, error)
+	// 获取订单详情
+	GetOrderDetailItem(ctx context.Context, in *GetOrderDetailItemReq, opts ...grpc.CallOption) (*GetOrderDetailItemResp, error)
+	// 支付订单
+	PayOrder(ctx context.Context, in *PayOrderReq, opts ...grpc.CallOption) (*PayOrderResp, error)
+	// 获取订单支付方式
+	GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error)
 }
 
 type orderServiceClient struct {
@@ -43,12 +49,45 @@ func (c *orderServiceClient) CreateVMDeployOrder(ctx context.Context, in *Create
 	return out, nil
 }
 
+func (c *orderServiceClient) GetOrderDetailItem(ctx context.Context, in *GetOrderDetailItemReq, opts ...grpc.CallOption) (*GetOrderDetailItemResp, error) {
+	out := new(GetOrderDetailItemResp)
+	err := c.cc.Invoke(ctx, "/order.OrderService/GetOrderDetailItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) PayOrder(ctx context.Context, in *PayOrderReq, opts ...grpc.CallOption) (*PayOrderResp, error) {
+	out := new(PayOrderResp)
+	err := c.cc.Invoke(ctx, "/order.OrderService/PayOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error) {
+	out := new(GetOrderPaymentMethodResp)
+	err := c.cc.Invoke(ctx, "/order.OrderService/GetOrderPaymentMethod", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServiceServer is the server API for OrderService service.
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility
 type OrderServiceServer interface {
 	// 创建虚拟机部署订单
 	CreateVMDeployOrder(context.Context, *CreateVMDeployOrderReq) (*CreateVMDeployOrderResp, error)
+	// 获取订单详情
+	GetOrderDetailItem(context.Context, *GetOrderDetailItemReq) (*GetOrderDetailItemResp, error)
+	// 支付订单
+	PayOrder(context.Context, *PayOrderReq) (*PayOrderResp, error)
+	// 获取订单支付方式
+	GetOrderPaymentMethod(context.Context, *GetOrderPaymentMethodReq) (*GetOrderPaymentMethodResp, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -58,6 +97,15 @@ type UnimplementedOrderServiceServer struct {
 
 func (UnimplementedOrderServiceServer) CreateVMDeployOrder(context.Context, *CreateVMDeployOrderReq) (*CreateVMDeployOrderResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVMDeployOrder not implemented")
+}
+func (UnimplementedOrderServiceServer) GetOrderDetailItem(context.Context, *GetOrderDetailItemReq) (*GetOrderDetailItemResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrderDetailItem not implemented")
+}
+func (UnimplementedOrderServiceServer) PayOrder(context.Context, *PayOrderReq) (*PayOrderResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PayOrder not implemented")
+}
+func (UnimplementedOrderServiceServer) GetOrderPaymentMethod(context.Context, *GetOrderPaymentMethodReq) (*GetOrderPaymentMethodResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrderPaymentMethod not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -90,6 +138,60 @@ func _OrderService_CreateVMDeployOrder_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_GetOrderDetailItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrderDetailItemReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).GetOrderDetailItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order.OrderService/GetOrderDetailItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).GetOrderDetailItem(ctx, req.(*GetOrderDetailItemReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_PayOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PayOrderReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).PayOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order.OrderService/PayOrder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).PayOrder(ctx, req.(*PayOrderReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_GetOrderPaymentMethod_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrderPaymentMethodReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).GetOrderPaymentMethod(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order.OrderService/GetOrderPaymentMethod",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).GetOrderPaymentMethod(ctx, req.(*GetOrderPaymentMethodReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +202,18 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateVMDeployOrder",
 			Handler:    _OrderService_CreateVMDeployOrder_Handler,
+		},
+		{
+			MethodName: "GetOrderDetailItem",
+			Handler:    _OrderService_GetOrderDetailItem_Handler,
+		},
+		{
+			MethodName: "PayOrder",
+			Handler:    _OrderService_PayOrder_Handler,
+		},
+		{
+			MethodName: "GetOrderPaymentMethod",
+			Handler:    _OrderService_GetOrderPaymentMethod_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

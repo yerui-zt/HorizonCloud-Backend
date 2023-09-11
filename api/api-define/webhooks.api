@@ -1,0 +1,3 @@
+syntax = "v1"
+
+import "webhook/payment/stripe_checkout.api"

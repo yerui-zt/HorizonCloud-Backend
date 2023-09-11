@@ -27,3 +27,21 @@ func (s *OrderServiceServer) CreateVMDeployOrder(ctx context.Context, in *order.
 	l := logic.NewCreateVMDeployOrderLogic(ctx, s.svcCtx)
 	return l.CreateVMDeployOrder(in)
 }
+
+// 获取订单详情
+func (s *OrderServiceServer) GetOrderDetailItem(ctx context.Context, in *order.GetOrderDetailItemReq) (*order.GetOrderDetailItemResp, error) {
+	l := logic.NewGetOrderDetailItemLogic(ctx, s.svcCtx)
+	return l.GetOrderDetailItem(in)
+}
+
+// 支付订单
+func (s *OrderServiceServer) PayOrder(ctx context.Context, in *order.PayOrderReq) (*order.PayOrderResp, error) {
+	l := logic.NewPayOrderLogic(ctx, s.svcCtx)
+	return l.PayOrder(in)
+}
+
+// 获取订单支付方式
+func (s *OrderServiceServer) GetOrderPaymentMethod(ctx context.Context, in *order.GetOrderPaymentMethodReq) (*order.GetOrderPaymentMethodResp, error) {
+	l := logic.NewGetOrderPaymentMethodLogic(ctx, s.svcCtx)
+	return l.GetOrderPaymentMethod(in)
+}
