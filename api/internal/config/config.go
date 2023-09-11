@@ -14,8 +14,7 @@ type Config struct {
 
 	UserRPC     zrpc.RpcClientConf
 	IdentityRPC zrpc.RpcClientConf
-
-	Jwt struct {
+	Jwt         struct {
 		Issuer       string
 		AccessSecret string
 		AccessExpire int64

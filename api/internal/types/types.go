@@ -80,3 +80,14 @@ type VMImage struct {
 type GetImageResp struct {
 	Images []VMImage `json:"images"`
 }
+
+type DeployVMInstanceReq struct {
+	BillingCycle string `json:"billing_cycle" validate:"required,oneof=monthly quarterly semiAnnually annually"`
+	Image        string `json:"image"`
+	GroupId      int64  `json:"group_id" validate:"required,number"`
+	PlanID       int64  `json:"plan_id" validate:"required,number"`
+}
+
+type DeployVMInstanceResp struct {
+	OrderNo string `json:"order_no"`
+}

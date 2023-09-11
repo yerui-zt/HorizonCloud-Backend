@@ -56,9 +56,21 @@ type (
         Images []VMImage `json:"images"`
     }
 
+    // 创建虚拟机
+    DeployVMInstanceReq struct {
+        BillingCycle string `json:"billing_cycle" validate:"required,oneof=monthly quarterly semiAnnually annually"`
+        Image      string `json:"image"`
+        GroupId    int64 `json:"group_id" validate:"required,number"`
+        PlanID    int64 `json:"plan_id" validate:"required,number"`
+    }
+    DeployVMInstanceResp struct {
+        OrderNo string `json:"order_no"`
+    }
+
 )
 
 
+// 公共接口
 @server (
     prefix: /api/vm
     group: vm
@@ -79,4 +91,17 @@ service horizonx-api {
     // 获取系统模版
     @handler getImage
     get /images returns (GetImageResp)
+}
+
+// 需要鉴权的接口
+@server (
+    jwt: Jwt
+    prefix: /api/vm
+    middleware: AuthMiddleware
+    group: vm
+)
+service horizonx-api {
+    // 创建虚拟机
+    @handler deployVMInstance
+    post /instance (DeployVMInstanceReq) returns (DeployVMInstanceResp)
 }

@@ -57,9 +57,21 @@ message GetImageResp{
     repeated VMImage images = 1;
 }
 
+message DeployVMInstanceReq{
+    string billing_cycle = 1;
+    string image = 2;
+    int64 group_id = 3;
+    int64 plan_id = 4;
+}
+message DeployVMInstanceResp{
+    string order_no = 1;
+}
+
 service VMService {
     rpc GetAllVMGroups(GetAllVMGroupsResp) returns (GetAllVMGroupsResp);
     rpc GetVMGroupByRegion(GetVMGroupByRegionReq) returns (GetVMGroupByRegionResp);
     rpc GetVMPlanByGroupId(GetVMPlanByGroupIdReq) returns (GetVMPlanByGroupIdResp);
     rpc GetImage(GetImageResp) returns (GetImageResp);
+
+    rpc DeployVMInstance(DeployVMInstanceReq) returns (DeployVMInstanceResp);
 }
