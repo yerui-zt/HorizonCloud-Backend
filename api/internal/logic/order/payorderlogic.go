@@ -1,6 +1,7 @@
 package order
 
 import (
+	"HorizonX/rpc/order/order"
 	"context"
 
 	"HorizonX/api/internal/svc"
@@ -24,7 +25,16 @@ func NewPayOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PayOrder
 }
 
 func (l *PayOrderLogic) PayOrder(req *types.PayOrderReq) (resp *types.PayOrderResp, err error) {
-	// todo: add your logic here and delete this line
+	rpcResp, err := l.svcCtx.OrderRPC.PayOrder(l.ctx, &order.PayOrderReq{
+		OrderNo: req.OrderNo,
+		Method:  req.Method,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	resp = &types.PayOrderResp{
+		Url: rpcResp.Url,
+	}
+	return resp, nil
 }

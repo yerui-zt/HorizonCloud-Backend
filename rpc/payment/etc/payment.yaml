@@ -1,26 +1,16 @@
-Name: order.rpc
-ListenOn: 0.0.0.0:12002
+Name: payment.rpc
+ListenOn: 0.0.0.0:12003
 Etcd:
   Hosts:
   - 127.0.0.1:2379
-  Key: order.rpc
+  Key: payment.rpc
 
 Log:
   Encoding: plain #options=plain|json ， 生产环境建议使用json
-
-#rpc
-PaymentRPC:
-  Etcd:
-    Hosts:
-      - 127.0.0.1:2379
-    Key: payment.rpc
 
 Mysql:
   DataSource: root:123456@tcp(127.0.0.1:3306)/horizonx?charset=utf8mb4&parseTime=true&loc=Local
 
 Redis:
-  Key: rpc:order
+  Key: rpc:payment
   Host: 127.0.0.1:6379
-
-Cache:
-  - Host: 127.0.0.1:6379

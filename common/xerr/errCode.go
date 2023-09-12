@@ -23,6 +23,11 @@ func init() {
 	code[ORDER_PLAN_NOT_FOUND] = 400
 	code[ORDER_VM_GROUP_NOT_FOUND] = 400
 	code[ORDER_VM_IMAGE_NOT_FOUND] = 400
+	code[ORDER_HAS_PAID] = 400
+
+	// 支付模块
+	code[PAYMENT_METHOD_NOT_FOUND] = 400
+	code[PAYMENT_CREATE_ERROR] = 500
 }
 
 // MapErrMsg 根据错误类型返回错误码
