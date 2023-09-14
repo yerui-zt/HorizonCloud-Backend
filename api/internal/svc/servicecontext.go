@@ -18,9 +18,10 @@ type ServiceContext struct {
 	OrderRPC       orderservice.OrderService
 	AuthMiddleware rest.Middleware
 
-	HypervisorGroupModel model.HypervisorGroupModel
-	VmPlanModel          model.VmPlanModel
-	VmTemplateModel      model.VmTemplateModel
+	HypervisorGroupModel     model.HypervisorGroupModel
+	VmPlanModel              model.VmPlanModel
+	VmTemplateModel          model.VmTemplateModel
+	SystemPaymentMethodModel model.SystemPaymentMethodModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -32,9 +33,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			identityservice.NewIdentityService(zrpc.MustNewClient(c.IdentityRPC)),
 		).Handle,
 
-		HypervisorGroupModel: model.NewHypervisorGroupModel(sqlx.NewMysql(c.Mysql.DataSource)),
-		VmPlanModel:          model.NewVmPlanModel(sqlx.NewMysql(c.Mysql.DataSource)),
-		VmTemplateModel:      model.NewVmTemplateModel(sqlx.NewMysql(c.Mysql.DataSource)),
+		HypervisorGroupModel:     model.NewHypervisorGroupModel(sqlx.NewMysql(c.Mysql.DataSource)),
+		VmPlanModel:              model.NewVmPlanModel(sqlx.NewMysql(c.Mysql.DataSource)),
+		VmTemplateModel:          model.NewVmTemplateModel(sqlx.NewMysql(c.Mysql.DataSource)),
+		SystemPaymentMethodModel: model.NewSystemPaymentMethodModel(sqlx.NewMysql(c.Mysql.DataSource)),
 
 		UserRPC:  userservice.NewUserService(zrpc.MustNewClient(c.UserRPC)),
 		OrderRPC: orderservice.NewOrderService(zrpc.MustNewClient(c.OrderRPC)),

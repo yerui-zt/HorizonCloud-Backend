@@ -15,6 +15,8 @@ import (
 type (
 	CreateVMDeployOrderReq    = order.CreateVMDeployOrderReq
 	CreateVMDeployOrderResp   = order.CreateVMDeployOrderResp
+	FullFillOrderReq          = order.FullFillOrderReq
+	FullFillOrderResp         = order.FullFillOrderResp
 	GetOrderDetailItemReq     = order.GetOrderDetailItemReq
 	GetOrderDetailItemResp    = order.GetOrderDetailItemResp
 	GetOrderPaymentMethodReq  = order.GetOrderPaymentMethodReq
@@ -33,6 +35,8 @@ type (
 		PayOrder(ctx context.Context, in *PayOrderReq, opts ...grpc.CallOption) (*PayOrderResp, error)
 		// 获取订单支付方式
 		GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error)
+		// 订单支付成功后的回调
+		FullFillOrder(ctx context.Context, in *FullFillOrderReq, opts ...grpc.CallOption) (*FullFillOrderResp, error)
 	}
 
 	defaultOrderService struct {
@@ -68,4 +72,10 @@ func (m *defaultOrderService) PayOrder(ctx context.Context, in *PayOrderReq, opt
 func (m *defaultOrderService) GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error) {
 	client := order.NewOrderServiceClient(m.cli.Conn())
 	return client.GetOrderPaymentMethod(ctx, in, opts...)
+}
+
+// 订单支付成功后的回调
+func (m *defaultOrderService) FullFillOrder(ctx context.Context, in *FullFillOrderReq, opts ...grpc.CallOption) (*FullFillOrderResp, error) {
+	client := order.NewOrderServiceClient(m.cli.Conn())
+	return client.FullFillOrder(ctx, in, opts...)
 }

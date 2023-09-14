@@ -30,6 +30,8 @@ type OrderServiceClient interface {
 	PayOrder(ctx context.Context, in *PayOrderReq, opts ...grpc.CallOption) (*PayOrderResp, error)
 	// 获取订单支付方式
 	GetOrderPaymentMethod(ctx context.Context, in *GetOrderPaymentMethodReq, opts ...grpc.CallOption) (*GetOrderPaymentMethodResp, error)
+	// 订单支付成功后的回调
+	FullFillOrder(ctx context.Context, in *FullFillOrderReq, opts ...grpc.CallOption) (*FullFillOrderResp, error)
 }
 
 type orderServiceClient struct {
@@ -76,6 +78,15 @@ func (c *orderServiceClient) GetOrderPaymentMethod(ctx context.Context, in *GetO
 	return out, nil
 }
 
+func (c *orderServiceClient) FullFillOrder(ctx context.Context, in *FullFillOrderReq, opts ...grpc.CallOption) (*FullFillOrderResp, error) {
+	out := new(FullFillOrderResp)
+	err := c.cc.Invoke(ctx, "/order.OrderService/FullFillOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServiceServer is the server API for OrderService service.
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility
@@ -88,6 +99,8 @@ type OrderServiceServer interface {
 	PayOrder(context.Context, *PayOrderReq) (*PayOrderResp, error)
 	// 获取订单支付方式
 	GetOrderPaymentMethod(context.Context, *GetOrderPaymentMethodReq) (*GetOrderPaymentMethodResp, error)
+	// 订单支付成功后的回调
+	FullFillOrder(context.Context, *FullFillOrderReq) (*FullFillOrderResp, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -106,6 +119,9 @@ func (UnimplementedOrderServiceServer) PayOrder(context.Context, *PayOrderReq) (
 }
 func (UnimplementedOrderServiceServer) GetOrderPaymentMethod(context.Context, *GetOrderPaymentMethodReq) (*GetOrderPaymentMethodResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrderPaymentMethod not implemented")
+}
+func (UnimplementedOrderServiceServer) FullFillOrder(context.Context, *FullFillOrderReq) (*FullFillOrderResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FullFillOrder not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -192,6 +208,24 @@ func _OrderService_GetOrderPaymentMethod_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_FullFillOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FullFillOrderReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).FullFillOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order.OrderService/FullFillOrder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).FullFillOrder(ctx, req.(*FullFillOrderReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -214,6 +248,10 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOrderPaymentMethod",
 			Handler:    _OrderService_GetOrderPaymentMethod_Handler,
+		},
+		{
+			MethodName: "FullFillOrder",
+			Handler:    _OrderService_FullFillOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

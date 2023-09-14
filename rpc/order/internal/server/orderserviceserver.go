@@ -45,3 +45,9 @@ func (s *OrderServiceServer) GetOrderPaymentMethod(ctx context.Context, in *orde
 	l := logic.NewGetOrderPaymentMethodLogic(ctx, s.svcCtx)
 	return l.GetOrderPaymentMethod(in)
 }
+
+// 订单支付成功后的回调
+func (s *OrderServiceServer) FullFillOrder(ctx context.Context, in *order.FullFillOrderReq) (*order.FullFillOrderResp, error) {
+	l := logic.NewFullFillOrderLogic(ctx, s.svcCtx)
+	return l.FullFillOrder(in)
+}

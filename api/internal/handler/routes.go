@@ -7,6 +7,7 @@ import (
 	order "HorizonX/api/internal/handler/order"
 	user "HorizonX/api/internal/handler/user"
 	vm "HorizonX/api/internal/handler/vm"
+	webhookspaymentstirpe_checkout "HorizonX/api/internal/handler/webhooks/payment/stirpe_checkout"
 	"HorizonX/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -108,5 +109,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		),
 		rest.WithJwt(serverCtx.Config.Jwt.AccessSecret),
 		rest.WithPrefix("/api/order"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/:uniquePath",
+				Handler: webhookspaymentstirpe_checkout.StripeCheckoutWebhookHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/webhooks/payment/stripe_checkout"),
 	)
 }

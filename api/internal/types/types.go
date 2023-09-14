@@ -138,3 +138,36 @@ type GetOrderPaymentMethodReq struct {
 type GetOrderPaymentMethodResp struct {
 	Methods []OrderPaymentMethod `json:"methods"`
 }
+
+type EventData struct {
+	Object             map[string]interface{} `json:"-"`
+	PreviousAttributes map[string]interface{} `json:"previous_attributes"`
+	Raw                []byte                 `json:"object"`
+}
+
+type EventRequest struct {
+	ID             string `json:"id"`
+	IdempotencyKey string `json:"idempotency_key"`
+}
+
+type StripeEventObject struct {
+	Account         string        `json:"account, optional"`
+	APIVersion      string        `json:"api_version"`
+	Created         int64         `json:"created"`
+	Data            *EventData    `json:"data"`
+	ID              string        `json:"id"`
+	Livemode        bool          `json:"livemode"`
+	Object          string        `json:"object"`
+	PendingWebhooks int64         `json:"pending_webhooks"`
+	Request         *EventRequest `json:"request"`
+	Type            string        `json:"type"`
+}
+
+type StripeCheckoutWebhookReq struct {
+	UniquePath      string `path:"uniquePath" validate:"required"`
+	StripeSignature string `header:"Stripe-Signature"`
+}
+
+type StripeCheckoutWebhookResp struct {
+	Msg string `json:"msg"`
+}

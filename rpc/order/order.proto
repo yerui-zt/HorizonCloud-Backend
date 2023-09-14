@@ -59,6 +59,15 @@ message GetOrderPaymentMethodResp {
   repeated OrderPaymentMethod methods =1;
 }
 
+message FullFillOrderReq {
+  string order_no =1;
+  string callback_no =2;
+  string method =3;
+}
+message FullFillOrderResp {
+  bool success =1;
+}
+
 
 service OrderService {
   // 创建虚拟机部署订单
@@ -69,4 +78,6 @@ service OrderService {
   rpc PayOrder(PayOrderReq) returns (PayOrderResp);
   // 获取订单支付方式
   rpc GetOrderPaymentMethod(GetOrderPaymentMethodReq) returns (GetOrderPaymentMethodResp);
+  // 订单支付成功后的回调
+  rpc FullFillOrder(FullFillOrderReq) returns (FullFillOrderResp);
 }

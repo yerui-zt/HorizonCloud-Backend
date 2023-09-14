@@ -22,3 +22,10 @@ api服务：
 return nil, errors.Wrapf(err, "login error [email: %s]", req.Email)
 2）api 服务不管 rpc 返回的是什么错误信息，我就想自己再重新定义给前端返回错误信息（比如 rpc 已经返回了 “用户已存在”，api 想调用 rpc 时只要有错误我就返回给前端 “用户注册失败”）
 return nil, errors.Wrapf(xerr.NewErrCodeMsg(400,"test"), "login error [email: %s]", req.Email)
+
+
+创建订单时候，新增延迟队列（判断状态），如果超时未支付，自动取消订单
+支付回调成功，新增消息队列，履行订单
+独立一个服务，监听消息队列和延迟队列，消费任务
+kq pusher 在 rpc
+kq consumer 在 mq （新建）
