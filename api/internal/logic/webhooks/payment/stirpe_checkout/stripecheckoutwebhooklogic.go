@@ -2,6 +2,7 @@ package stirpe_checkout
 
 import (
 	"HorizonX/common/xerr"
+	"HorizonX/rpc/order/order"
 	"HorizonX/rpc/payment/payment"
 	"context"
 	"encoding/json"
@@ -63,9 +64,20 @@ func (l *StripeCheckoutWebhookLogic) StripeCheckoutWebhook(req *types.StripeChec
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "invalid stripe session"), "json.Unmarshal failed: %v", err)
 		}
-		//orderNo := session.ClientReferenceID
-		//callBackNo := session.PaymentIntent.ID
+		orderNo := session.ClientReferenceID
+		callBackNo := session.PaymentIntent.ID
+
+		_, err = l.svcCtx.OrderRPC.FullFillOrder(l.ctx, &order.FullFillOrderReq{
+			OrderNo:    orderNo,
+			CallbackNo: callBackNo,
+			Method:     method.Name,
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	return &types.StripeCheckoutWebhookResp{}, nil
+	return &types.StripeCheckoutWebhookResp{
+		Msg: "success",
+	}, nil
 }

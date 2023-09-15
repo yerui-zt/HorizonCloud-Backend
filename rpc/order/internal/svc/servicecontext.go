@@ -4,12 +4,15 @@ import (
 	"HorizonX/model"
 	"HorizonX/rpc/order/internal/config"
 	"HorizonX/rpc/payment/paymentservice"
+	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
 	Config config.Config
+
+	AsynqClient *asynq.Client
 
 	PaymentRPC paymentservice.PaymentService
 
@@ -28,6 +31,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config: c,
 
 		PaymentRPC: paymentservice.NewPaymentService(zrpc.MustNewClient(c.PaymentRPC)),
+
+		AsynqClient: asynq.NewClient(&asynq.RedisClientOpt{Addr: c.Redis.Host}),
 
 		OrderModel:               model.NewOrderModel(sqlConn),
 		OrderItemModel:           model.NewOrderItemModel(sqlConn),

@@ -13,6 +13,9 @@ const (
 	DB_NOT_FOUND_ERROR  string = "DB_NOT_FOUND_ERROR"
 
 	JWT_ISSUE_ERROR string = "JWT_ISSUE_ERROR"
+
+	MQ_PUBLISH_ERROR     string = "MQ_PUBLISH_ERROR"
+	JSON_UNMARSHAL_ERROR string = "JSON_UNMARSHAL_ERROR"
 )
 
 // RPC模块细分错误码，如用户模块，订单模块等

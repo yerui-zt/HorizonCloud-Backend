@@ -5,6 +5,8 @@ Etcd:
   - 127.0.0.1:2379
   Key: order.rpc
 
+
+
 Log:
   Encoding: plain #options=plain|json ， 生产环境建议使用json
 

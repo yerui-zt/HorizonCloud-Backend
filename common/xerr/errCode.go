@@ -11,6 +11,8 @@ func init() {
 	code[DB_ERROR] = 500
 	code[DB_NOT_FOUND_ERROR] = 500
 	code[JWT_ISSUE_ERROR] = 500
+	code[MQ_PUBLISH_ERROR] = 500
+	code[JSON_UNMARSHAL_ERROR] = 500
 
 	// 用户模块
 	code[USER_PASSWORD_ERROR] = 400
