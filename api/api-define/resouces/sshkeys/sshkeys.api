@@ -1,0 +1,65 @@
+syntax = "v1"
+
+type (
+    SSHKey struct {
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        PublicKey string `json:"public_key"`
+        CreateAt string `json:"create_at"`
+    }
+)
+
+type (
+    AddSSHKeyReq struct {
+          Name string `json:"name" validate:"required,min=1,max=10"`
+          PublicKey string `json:"public_key" validate:"required"`
+    }
+    AddSSHKeyResp struct {
+        SSHKey SSHKey `json:"ssh_key"`
+    }
+
+    DeleteSSHKeyReq struct {
+        KeyId int64 `path:"keyId" validate:"required"`
+    }
+    DeleteSSHKeyResp struct {
+        Msg string `json:"msg"`
+    }
+
+    GetSSHKeyReq struct {
+       KeyId int64 `path:"keyId" validate:"required"`
+    }
+    GetSSHKeyResp struct {
+        SSHKey SSHKey `json:"ssh_key"`
+    }
+
+
+    GetUserSSHKeysReq struct {
+        UserId string `path:"userId" validate:"required"`
+    }
+    GetUserSSHKeysResp struct {
+        SSHKeys []SSHKey `json:"ssh_keys"`
+    }
+)
+
+// 需要鉴权的接口
+@server (
+    jwt: Jwt
+    prefix: /api/resource/sshkey
+    middleware: AuthMiddleware
+    group: resource/sshkeys
+)
+service horizonx-api {
+    @handler addSSHKey
+    post / (AddSSHKeyReq) returns (AddSSHKeyResp)
+
+    @handler deleteSSHKey
+    delete /:keyId (DeleteSSHKeyReq) returns (DeleteSSHKeyResp)
+
+    @handler getSSHKey
+    get /:keyId (GetSSHKeyReq) returns (GetSSHKeyResp)
+
+    @handler getUserSSHKeys
+    get /user/:userId (GetUserSSHKeysReq) returns (GetUserSSHKeysResp)
+
+}
+

@@ -1,0 +1,3 @@
+syntax = "v1"
+
+import "payment/stripe_checkout.api"
