@@ -22,6 +22,7 @@ type ServiceContext struct {
 	VmPlanModel              model.VmPlanModel
 	VmTemplateModel          model.VmTemplateModel
 	SystemPaymentMethodModel model.SystemPaymentMethodModel
+	SshKeysModel             model.SshKeysModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -37,6 +38,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		VmPlanModel:              model.NewVmPlanModel(sqlx.NewMysql(c.Mysql.DataSource)),
 		VmTemplateModel:          model.NewVmTemplateModel(sqlx.NewMysql(c.Mysql.DataSource)),
 		SystemPaymentMethodModel: model.NewSystemPaymentMethodModel(sqlx.NewMysql(c.Mysql.DataSource)),
+		SshKeysModel:             model.NewSshKeysModel(sqlx.NewMysql(c.Mysql.DataSource)),
 
 		UserRPC:  userservice.NewUserService(zrpc.MustNewClient(c.UserRPC)),
 		OrderRPC: orderservice.NewOrderService(zrpc.MustNewClient(c.OrderRPC)),

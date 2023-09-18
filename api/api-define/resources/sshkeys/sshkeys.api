@@ -19,14 +19,14 @@ type (
     }
 
     DeleteSSHKeyReq struct {
-        KeyId int64 `path:"keyId" validate:"required"`
+        KeyId string `path:"keyId" validate:"required"`
     }
     DeleteSSHKeyResp struct {
         Msg string `json:"msg"`
     }
 
     GetSSHKeyReq struct {
-       KeyId int64 `path:"keyId" validate:"required"`
+       KeyId string `path:"keyId" validate:"required"`
     }
     GetSSHKeyResp struct {
         SSHKey SSHKey `json:"ssh_key"`

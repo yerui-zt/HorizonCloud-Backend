@@ -6,16 +6,18 @@ const OK string = "OK"
 
 // 通用错误码
 const (
-	SERVER_COMMON_ERROR string = "SERVER_COMMON_ERROR"
-	REQUEST_PARAM_ERROR string = "REQUEST_PARAM_ERROR"
-	UNAUTHORIZED        string = "UNAUTHORIZED"
-	DB_ERROR            string = "DB_ERROR"
-	DB_NOT_FOUND_ERROR  string = "DB_NOT_FOUND_ERROR"
+	SERVER_COMMON_ERROR     string = "SERVER_COMMON_ERROR"
+	REQUEST_PARAM_ERROR     string = "REQUEST_PARAM_ERROR"
+	UNAUTHORIZED            string = "You are not authorized to do this action"
+	GENERAL_NOT_FOUND_ERROR string = "Resource not found"
+	DB_ERROR                string = "DB_ERROR"
+	DB_NOT_FOUND_ERROR      string = "DB_NOT_FOUND_ERROR"
 
 	JWT_ISSUE_ERROR string = "JWT_ISSUE_ERROR"
 
 	MQ_PUBLISH_ERROR     string = "MQ_PUBLISH_ERROR"
 	JSON_UNMARSHAL_ERROR string = "JSON_UNMARSHAL_ERROR"
+	UNA
 )
 
 // RPC模块细分错误码，如用户模块，订单模块等
@@ -52,4 +54,9 @@ const (
 	PROXMOX_VM_FETCH_ERROR      string = "PROXMOX_VM_FETCH_ERROR"
 	PROXMOX_VM_CONFIG_ERROR     string = "PROXMOX_VM_CONFIG_FAILED"
 	IP_NO_AVAILABLE_ADDR_ERROR  string = "NO_AVAILABLE_IP_ADDRESS"
+)
+
+// SSH_KEY 模块
+const (
+	INVALID_SSH_KEY string = "INVALID_SSH_KEY"
 )

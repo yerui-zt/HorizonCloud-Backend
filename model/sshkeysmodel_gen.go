@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/pkg/errors"
@@ -49,10 +50,11 @@ type (
 	}
 
 	SshKeys struct {
-		Id      int64  `db:"id"`
-		UserId  int64  `db:"user_id"`
-		Name    string `db:"name"`
-		Content string `db:"content"`
+		Id         int64     `db:"id"`
+		UserId     int64     `db:"user_id"`
+		Name       string    `db:"name"`
+		Content    string    `db:"content"`
+		CreateTime time.Time `db:"create_time"`
 	}
 )
 

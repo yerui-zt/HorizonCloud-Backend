@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	order "HorizonX/api/internal/handler/order"
+	resourcesshkeys "HorizonX/api/internal/handler/resource/sshkeys"
 	user "HorizonX/api/internal/handler/user"
 	vm "HorizonX/api/internal/handler/vm"
 	webhookspaymentstirpe_checkout "HorizonX/api/internal/handler/webhooks/payment/stirpe_checkout"
@@ -120,5 +121,35 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/api/webhooks/payment/stripe_checkout"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/ssh_keys",
+					Handler: resourcesshkeys.AddSSHKeyHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/ssh_keys/:keyId",
+					Handler: resourcesshkeys.DeleteSSHKeyHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/ssh_keys/:keyId",
+					Handler: resourcesshkeys.GetSSHKeyHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/ssh_keys/user/:userId",
+					Handler: resourcesshkeys.GetUserSSHKeysHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithJwt(serverCtx.Config.Jwt.AccessSecret),
+		rest.WithPrefix("/api/resource"),
 	)
 }

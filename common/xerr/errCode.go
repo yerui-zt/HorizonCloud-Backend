@@ -8,6 +8,7 @@ func init() {
 	code[SERVER_COMMON_ERROR] = 400
 	code[REQUEST_PARAM_ERROR] = 400
 	code[UNAUTHORIZED] = 401
+	code[GENERAL_NOT_FOUND_ERROR] = 404
 	code[DB_ERROR] = 500
 	code[DB_NOT_FOUND_ERROR] = 500
 	code[JWT_ISSUE_ERROR] = 500
@@ -40,6 +41,9 @@ func init() {
 	code[PROXMOX_VM_FETCH_ERROR] = 500
 	code[PROXMOX_VM_CONFIG_ERROR] = 500
 	code[IP_NO_AVAILABLE_ADDR_ERROR] = 500
+
+	// SSH_KEY 模块
+	code[INVALID_SSH_KEY] = 400
 }
 
 // MapErrMsg 根据错误类型返回错误码

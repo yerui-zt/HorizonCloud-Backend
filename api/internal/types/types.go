@@ -173,3 +173,43 @@ type StripeCheckoutWebhookReq struct {
 type StripeCheckoutWebhookResp struct {
 	Msg string `json:"msg"`
 }
+
+type SSHKey struct {
+	Id        int64  `json:"id"`
+	Name      string `json:"name"`
+	PublicKey string `json:"public_key"`
+	CreateAt  string `json:"create_at"`
+}
+
+type AddSSHKeyReq struct {
+	Name      string `json:"name" validate:"required,min=1,max=10"`
+	PublicKey string `json:"public_key" validate:"required"`
+}
+
+type AddSSHKeyResp struct {
+	SSHKey SSHKey `json:"ssh_key"`
+}
+
+type DeleteSSHKeyReq struct {
+	KeyId string `path:"keyId" validate:"required"`
+}
+
+type DeleteSSHKeyResp struct {
+	Msg string `json:"msg"`
+}
+
+type GetSSHKeyReq struct {
+	KeyId string `path:"keyId" validate:"required"`
+}
+
+type GetSSHKeyResp struct {
+	SSHKey SSHKey `json:"ssh_key"`
+}
+
+type GetUserSSHKeysReq struct {
+	UserId string `path:"userId" validate:"required"`
+}
+
+type GetUserSSHKeysResp struct {
+	SSHKeys []SSHKey `json:"ssh_keys"`
+}
