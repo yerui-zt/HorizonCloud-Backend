@@ -44,22 +44,22 @@ type (
 // 需要鉴权的接口
 @server (
     jwt: Jwt
-    prefix: /api/resource/sshkey
+    prefix: /api/resource
     middleware: AuthMiddleware
     group: resource/sshkeys
 )
 service horizonx-api {
     @handler addSSHKey
-    post / (AddSSHKeyReq) returns (AddSSHKeyResp)
+    post /ssh_keys (AddSSHKeyReq) returns (AddSSHKeyResp)
 
     @handler deleteSSHKey
-    delete /:keyId (DeleteSSHKeyReq) returns (DeleteSSHKeyResp)
+    delete /ssh_keys/:keyId (DeleteSSHKeyReq) returns (DeleteSSHKeyResp)
 
     @handler getSSHKey
-    get /:keyId (GetSSHKeyReq) returns (GetSSHKeyResp)
+    get /ssh_keys/:keyId (GetSSHKeyReq) returns (GetSSHKeyResp)
 
     @handler getUserSSHKeys
-    get /user/:userId (GetUserSSHKeysReq) returns (GetUserSSHKeysResp)
+    get /ssh_keys/user/:userId (GetUserSSHKeysReq) returns (GetUserSSHKeysResp)
 
 }
 
