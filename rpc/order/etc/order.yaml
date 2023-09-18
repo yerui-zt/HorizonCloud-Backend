@@ -1,11 +1,10 @@
 Name: order.rpc
 ListenOn: 0.0.0.0:12002
+Timeout: 100000
 Etcd:
   Hosts:
   - 127.0.0.1:2379
   Key: order.rpc
-
-
 
 Log:
   Encoding: plain #options=plain|json ， 生产环境建议使用json
@@ -16,6 +15,7 @@ PaymentRPC:
     Hosts:
       - 127.0.0.1:2379
     Key: payment.rpc
+  Timeout: 100000
 
 Mysql:
   DataSource: root:123456@tcp(127.0.0.1:3306)/horizonx?charset=utf8mb4&parseTime=true&loc=Local

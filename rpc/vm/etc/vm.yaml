@@ -1,25 +1,24 @@
-Name: mqueue.job
-ListenOn: 0.0.0.0:12004
+Name: vm.rpc
+ListenOn: 0.0.0.0:12005
 Timeout: 100000
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
-  Key: mqueue.job
+  - 127.0.0.1:2379
+  Key: vm.rpc
+
+##rpc
+#PaymentRPC:
+#  Etcd:
+#    Hosts:
+#      - 127.0.0.1:2379
+#    Key: payment.rpc
 
 Log:
   Encoding: plain #options=plain|json ， 生产环境建议使用json
-
-#rpc
-VmRPC:
-  Etcd:
-    Hosts:
-      - 127.0.0.1:2379
-    Key: vm.rpc
-  Timeout: 60000
 
 Mysql:
   DataSource: root:123456@tcp(127.0.0.1:3306)/horizonx?charset=utf8mb4&parseTime=true&loc=Local
 
 Redis:
-  Key: job:mqueue
+  Key: rpc:vm
   Host: 127.0.0.1:6379

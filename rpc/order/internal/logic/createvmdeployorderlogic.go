@@ -79,27 +79,30 @@ func (l *CreateVMDeployOrderLogic) CreateVMDeployOrder(in *order.CreateVMDeployO
 		}
 
 		// 2. 创建订单Item
-		amount := calculatePrice(plan, in.BillingCycle)
+		amount := tools.CalculatePrice(plan, in.BillingCycle)
 		if amount == 0 {
 			return errors.Wrapf(xerr.NewErrCodeMsg(400, "invalid billing cycle"), "invalid billing cycle [billing cycle: %s]", in.BillingCycle)
 		}
 		// 创建content
+		dueDate := tools.CalculateDueDate(now, in.BillingCycle)
 		content, err := json.Marshal(&order.OrderItemContentVMCreateContent{
 			Plan:    plan.Name,
 			VMGroup: vmGroup.Name,
 			OSImage: osImage.Name,
 			ServicePeriod: fmt.Sprintf("%s ~ %s",
 				now.Format("2006-01-02"),
-				calculateDueDate(now, in.BillingCycle).Format("2006-01-02")),
+				dueDate.Format("2006-01-02")),
 		})
 		if err != nil {
 			return errors.Wrapf(xerr.NewErrCode(xerr.SERVER_COMMON_ERROR), "marshal order item content failed [err: %v]", err)
 		}
 		// 创建action
 		action, err := json.Marshal(&order.OrderItemActionVmInstanceCreateAction{
+			HostName:          in.Hostname,
 			HypervisorGroupId: plan.HypervisorGroupId,
 			PlanID:            plan.Id,
 			OSImageID:         osImage.Id,
+			BillingCycle:      in.BillingCycle,
 		})
 		if err != nil {
 			return errors.Wrapf(xerr.NewErrCode(xerr.SERVER_COMMON_ERROR), "marshal order item action failed [err: %v]", err)
@@ -136,37 +139,4 @@ func (l *CreateVMDeployOrderLogic) CreateVMDeployOrder(in *order.CreateVMDeployO
 		OrderNo: newOrder.OrderNo,
 	}, nil
 
-}
-
-// calculateDueDate 计算订单的到期时间
-func calculateDueDate(createTime time.Time, billingCycle string) time.Time {
-	dueDate := createTime
-	switch billingCycle {
-	case "monthly":
-		return dueDate.AddDate(0, 1, 0)
-	case "quarterly":
-		return dueDate.AddDate(0, 3, 0)
-	case "semiAnnually":
-		return dueDate.AddDate(0, 6, 0)
-	case "annually":
-		return dueDate.AddDate(1, 0, 0)
-	default:
-		return dueDate
-	}
-}
-
-// calculatePrice 计算订单的价格
-func calculatePrice(plan *model.VmPlan, cycle string) int64 {
-	switch cycle {
-	case "monthly":
-		return plan.MonthlyPrice
-	case "quarterly":
-		return plan.QuarterlyPrice
-	case "semiAnnually":
-		return plan.SemiAnnuallyPrice
-	case "annually":
-		return plan.AnnuallyPrice
-	default:
-		return 0
-	}
 }

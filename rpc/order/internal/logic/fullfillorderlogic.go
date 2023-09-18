@@ -1,8 +1,9 @@
 package logic
 
 import (
-	"HorizonX/common/aqueue/jobtype"
 	"HorizonX/common/xerr"
+	"HorizonX/model"
+	"HorizonX/rpc/mqueue/worker/jobtype"
 	"context"
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -50,13 +51,24 @@ func (l *FullFillOrderLogic) FullFillOrder(in *order.FullFillOrderReq) (*order.F
 
 		// 2. 发布订单支付成功事件
 		// 使用消息队列，异步处理订单
-		task, err := jobtype.NewOrderExecActionMq(findOrder.Id)
-		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.MQ_PUBLISH_ERROR), "publish order exec action mq failed: %v", err)
+		whereBuilder := l.svcCtx.OrderItemModel.SelectBuilder().Where("order_id = ?", findOrder.Id)
+		items, err := l.svcCtx.OrderItemModel.FindAll(l.ctx, whereBuilder, "id ASC")
+		if err != nil && err != model.ErrNotFound {
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "get order item failed: %v", err)
 		}
-		_, err = l.svcCtx.AsynqClient.Enqueue(task)
-		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.MQ_PUBLISH_ERROR), "publish order exec action mq failed: %v", err)
+		if items == nil {
+			return nil
+		}
+
+		for _, item := range items {
+			task, err := jobtype.NewOrderExecActionMq(item)
+			if err != nil {
+				return errors.Wrapf(xerr.NewErrCode(xerr.MQ_PUBLISH_ERROR), "create orderExecActionMq mq failed: %v", err)
+			}
+			_, err = l.svcCtx.AsynqClient.Enqueue(task)
+			if err != nil {
+				return errors.Wrapf(xerr.NewErrCode(xerr.MQ_PUBLISH_ERROR), "publish orderExecActionMq mq failed: %v", err)
+			}
 		}
 		return nil
 	})

@@ -1,8 +1,8 @@
 package logic
 
 import (
-	"HorizonX/common/aqueue/jobtype"
 	"HorizonX/rpc/mqueue/worker/internal/svc"
+	"HorizonX/rpc/mqueue/worker/jobtype"
 	"context"
 	"github.com/hibiken/asynq"
 )

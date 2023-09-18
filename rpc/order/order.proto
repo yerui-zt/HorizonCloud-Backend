@@ -9,6 +9,7 @@ message CreateVMDeployOrderReq {
   int64 plan_id =3;
   string image =4;
   string billing_cycle =5;
+  string hostname =6;
 }
 
 message CreateVMDeployOrderResp {

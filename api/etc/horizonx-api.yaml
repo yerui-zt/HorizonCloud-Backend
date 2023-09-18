@@ -2,6 +2,7 @@ Name: HorizonX
 Mode: dev   #options=dev|test|rt|pre|pro
 Host: 0.0.0.0
 Port: 8991
+Timeout: 100000
 
 Log:
   Encoding: plain #options=plain|json ， 生产环境建议使用json
@@ -18,16 +19,19 @@ UserRPC:
     Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
+  Timeout: 100000
 IdentityRPC:
   Etcd:
     Hosts:
       - 127.0.0.1:2379
     Key: identity.rpc
+  Timeout: 100000
 OrderRPC:
   Etcd:
     Hosts:
       - 127.0.0.1:2379
     Key: order.rpc
+  Timeout: 100000
 
 
 

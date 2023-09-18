@@ -14,5 +14,5 @@ type Config struct {
 		DataSource string
 	}
 
-	OrderRpc zrpc.RpcClientConf
+	VmRPC zrpc.RpcClientConf
 }

@@ -1,13 +1,13 @@
 package logic
 
 import (
-	"HorizonX/common/aqueue/jobtype"
 	"HorizonX/common/xerr"
-	"HorizonX/model"
 	"HorizonX/rpc/mqueue/worker/internal/svc"
+	"HorizonX/rpc/mqueue/worker/jobtype"
+	"HorizonX/rpc/order/order"
+	"HorizonX/rpc/vm/vmservice"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/hibiken/asynq"
 	"github.com/pkg/errors"
 )
@@ -29,30 +29,35 @@ func (l *OrderExecActionMqHandler) ProcessTask(ctx context.Context, t *asynq.Tas
 		return errors.Wrapf(xerr.NewErrCode(xerr.JSON_UNMARSHAL_ERROR), "unmarshal payload error [payload: %s]", string(t.Payload()))
 	}
 
-	findOrder, err := l.svcCtx.OrderModel.FindOne(ctx, nil, p.OrderId)
+	item := p.Item
+	findOrder, err := l.svcCtx.OrderModel.FindOne(ctx, nil, item.OrderId)
 	if err != nil {
-		return errors.Wrapf(xerr.NewErrCode(xerr.ORDER_NOT_FOUND), "find order error [orderId: %d]", p.OrderId)
+		return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find order error [order_id: %d]", item.OrderId)
 	}
-
-	whereBuilder := l.svcCtx.OrderItemModel.SelectBuilder().Where("order_id = ?", findOrder.Id)
-	items, err := l.svcCtx.OrderItemModel.FindAll(ctx, whereBuilder, "id ASC")
-	if err != nil && err != model.ErrNotFound {
-		return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "get order item failed: %v", err)
-	}
-
-	if items == nil {
-		return nil
-	}
-
-	for _, item := range items {
-		switch item.ActionType {
-		case "vm_instance_create":
-			fmt.Println("vm_instance_create", p.OrderId)
-
-		case "addFunds":
-		default:
-			return nil
+	// 开始执行
+	switch item.ActionType {
+	case "vm_instance_create":
+		actionStr := item.Action
+		var action order.OrderItemActionVmInstanceCreateAction
+		err := json.Unmarshal([]byte(actionStr), &action)
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.JSON_UNMARSHAL_ERROR), "unmarshal action error [action: %s]", actionStr)
 		}
+		_, err = l.svcCtx.VmRPC.DeployVMInstance(ctx, &vmservice.DeployVMInstanceReq{
+			Hostname:     action.HostName,
+			BillingCycle: action.BillingCycle,
+			ImageId:      action.OSImageID,
+			GroupId:      action.HypervisorGroupId,
+			PlanId:       action.PlanID,
+			UserId:       findOrder.UserId,
+		})
+		if err != nil {
+			return err
+		}
+		return nil
+	case "addFunds":
+	default:
+		return nil
 	}
 
 	return nil

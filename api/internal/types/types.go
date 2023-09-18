@@ -82,6 +82,8 @@ type GetImageResp struct {
 }
 
 type DeployVMInstanceReq struct {
+	SSHKey       string `json:"ssh_key" validate:"required"`
+	HostName     string `json:"host_name" validate:"required,hostname"`
 	BillingCycle string `json:"billing_cycle" validate:"required,oneof=monthly quarterly semiAnnually annually"`
 	Image        string `json:"image"`
 	GroupId      int64  `json:"group_id" validate:"required,number"`
