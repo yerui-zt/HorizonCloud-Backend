@@ -6,6 +6,8 @@ import (
 	"HorizonX/common/xerr"
 	"HorizonX/model"
 	"context"
+	"fmt"
+	"github.com/google/uuid"
 	"github.com/luthermonson/go-proxmox"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
@@ -53,6 +55,10 @@ func (l *DeployVMInstanceLogic) DeployVMInstance(in *vm.DeployVMInstanceReq) (*v
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.INVALID_SSH_KEY), "get ssh key failed: %v", err)
 	}
+	user, err := l.svcCtx.UserModel.FindOne(l.ctx, nil, in.UserId)
+	if err != nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.USER_NOT_FOUND_ERROR), "get user failed: %v", err)
+	}
 
 	// 先创建数据库记录，分配IP （使用事务）
 	// 然后再实际创建虚拟机
@@ -65,6 +71,7 @@ func (l *DeployVMInstanceLogic) DeployVMInstance(in *vm.DeployVMInstanceReq) (*v
 		now := time.Now()
 		insertInstance := model.VmInstance{
 			Status:           "pending",
+			UserId:           user.Id,
 			HypervisorNodeId: node.Id,
 			Name:             in.Hostname,
 			DueDate:          tools.CalculateDueDate(now, in.BillingCycle),
@@ -157,9 +164,27 @@ func (l *DeployVMInstanceLogic) DeployVMInstance(in *vm.DeployVMInstanceReq) (*v
 			return errors.Wrapf(xerr.NewErrCode(xerr.PROXMOX_VM_FETCH_ERROR), "get vm failed: %v", err)
 		}
 
+		// 新增该VM的User
+		pve_user_id := fmt.Sprintf("instance-%d_uid-%d_vm-%d@pve", instance.Id, user.Id, newVmID)
+		pve_user_pass := uuid.New().String()
+		err = hypervisor.CreateUser(
+			pve_user_id,
+			pve_user_pass,
+			user.Email,
+		)
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.PROXMOX_VM_CREATE_FAILED), "create user failed: %v", err)
+		}
+		// 授权该VM的User
+		err = hypervisor.GrantUserPermission(pve_user_id, newVM)
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.PROXMOX_VM_CREATE_FAILED), "create user failed: %v", err)
+		}
 		// 更新vm_instance中的vm_id
 		instance.Vmid = cast.ToInt64(newVmID)
 		instance.Status = "active"
+		instance.PveUserId = pve_user_id
+		instance.PveUserPassword = pve_user_pass
 		_, err = l.svcCtx.VmInstanceModel.Update(l.ctx, session, instance)
 		if err != nil {
 			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update vm instance failed: %v", err)

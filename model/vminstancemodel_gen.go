@@ -54,12 +54,15 @@ type (
 		CreateTime       time.Time      `db:"create_time"`
 		UpdateTime       time.Time      `db:"update_time"`
 		Vmid             int64          `db:"vmid"`
+		UserId           int64          `db:"user_id"`
 		HypervisorNodeId int64          `db:"hypervisor_node_id"`
 		Name             string         `db:"name"`
 		DueDate          time.Time      `db:"due_date"`
 		BillingCycle     string         `db:"billing_cycle"`
 		Price            int64          `db:"price"`
 		Status           string         `db:"status"`
+		PveUserId        string         `db:"pve_user_id"`
+		PveUserPassword  string         `db:"pve_user_password"`
 		PlanId           int64          `db:"plan_id"`
 		Vcpu             int64          `db:"vcpu"`
 		Memory           int64          `db:"memory"`
@@ -88,11 +91,11 @@ func (m *defaultVmInstanceModel) withSession(session sqlx.Session) *defaultVmIns
 
 func (m *defaultVmInstanceModel) Insert(ctx context.Context, session sqlx.Session, data *VmInstance) (sql.Result, error) {
 
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, vmInstanceRowsExpectAutoSet)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, vmInstanceRowsExpectAutoSet)
 	if session != nil {
-		return session.ExecCtx(ctx, query, data.Vmid, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6)
+		return session.ExecCtx(ctx, query, data.Vmid, data.UserId, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PveUserId, data.PveUserPassword, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6)
 	}
-	return m.conn.ExecCtx(ctx, query, data.Vmid, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6)
+	return m.conn.ExecCtx(ctx, query, data.Vmid, data.UserId, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PveUserId, data.PveUserPassword, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6)
 }
 
 func (m *defaultVmInstanceModel) FindOne(ctx context.Context, session sqlx.Session, id int64) (*VmInstance, error) {
@@ -117,9 +120,9 @@ func (m *defaultVmInstanceModel) FindOne(ctx context.Context, session sqlx.Sessi
 func (m *defaultVmInstanceModel) Update(ctx context.Context, session sqlx.Session, data *VmInstance) (sql.Result, error) {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, vmInstanceRowsWithPlaceHolder)
 	if session != nil {
-		return session.ExecCtx(ctx, query, data.Vmid, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6, data.Id)
+		return session.ExecCtx(ctx, query, data.Vmid, data.UserId, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PveUserId, data.PveUserPassword, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6, data.Id)
 	}
-	return m.conn.ExecCtx(ctx, query, data.Vmid, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6, data.Id)
+	return m.conn.ExecCtx(ctx, query, data.Vmid, data.UserId, data.HypervisorNodeId, data.Name, data.DueDate, data.BillingCycle, data.Price, data.Status, data.PveUserId, data.PveUserPassword, data.PlanId, data.Vcpu, data.Memory, data.Disk, data.Bandwidth, data.DataTransfer, data.Traffic, data.Ipv4, data.Ipv6, data.Id)
 }
 
 func (m *defaultVmInstanceModel) FindSum(ctx context.Context, builder squirrel.SelectBuilder, field string) (float64, error) {

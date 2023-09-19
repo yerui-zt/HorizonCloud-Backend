@@ -29,7 +29,7 @@ func (l *PVECtl) DeleteUser(userId string) error {
 	return l.Client.Delete(fmt.Sprintf("/access/users/%s", userId), nil)
 }
 
-func (l *PVECtl) SetUserPermission(userId string, v *proxmox.VirtualMachine) error {
+func (l *PVECtl) GrantUserPermission(userId string, v *proxmox.VirtualMachine) error {
 	acl := &ACLPermission{
 		Path:      fmt.Sprintf("/vms/%d", v.VMID),
 		Roles:     "PVEVMUser",
