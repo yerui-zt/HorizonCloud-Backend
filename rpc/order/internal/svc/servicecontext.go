@@ -23,6 +23,7 @@ type ServiceContext struct {
 	HypervisorGroupModel     model.HypervisorGroupModel
 	VmTemplateModel          model.VmTemplateModel
 	SystemPaymentMethodModel model.SystemPaymentMethodModel
+	SshKeysModel             model.SshKeysModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -41,5 +42,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		HypervisorGroupModel:     model.NewHypervisorGroupModel(sqlConn),
 		VmTemplateModel:          model.NewVmTemplateModel(sqlConn),
 		SystemPaymentMethodModel: model.NewSystemPaymentMethodModel(sqlConn),
+		SshKeysModel:             model.NewSshKeysModel(sqlConn),
 	}
 }

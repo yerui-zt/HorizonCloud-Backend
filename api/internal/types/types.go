@@ -82,7 +82,7 @@ type GetImageResp struct {
 }
 
 type DeployVMInstanceReq struct {
-	SSHKey       string `json:"ssh_key" validate:"required"`
+	KeyId        int64  `json:"key_id" validate:"required,number"`
 	HostName     string `json:"host_name" validate:"required,hostname"`
 	BillingCycle string `json:"billing_cycle" validate:"required,oneof=monthly quarterly semiAnnually annually"`
 	Image        string `json:"image"`

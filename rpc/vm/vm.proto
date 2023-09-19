@@ -58,14 +58,13 @@ option go_package="./vm";
 //}
 
 message DeployVMInstanceReq{
-
     string billing_cycle = 1;
     string hostname = 2;
     int64 image_id = 3;
     int64 group_id = 4;
     int64 plan_id = 5;
     int64 user_id = 6;
-    string sshKey = 7;
+    int64 ssh_key_id = 7;
 }
 message DeployVMInstanceResp{
     string instance_id = 1;

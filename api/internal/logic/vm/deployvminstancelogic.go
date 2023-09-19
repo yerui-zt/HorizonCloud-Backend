@@ -26,8 +26,6 @@ func NewDeployVMInstanceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *DeployVMInstanceLogic) DeployVMInstance(req *types.DeployVMInstanceReq) (resp *types.DeployVMInstanceResp, err error) {
 	uid := l.ctx.Value("uid").(string)
-	// todo: 验证 req.SSHKey 合法性
-	// 		可以考虑存储到数据库，然后再验证
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +36,7 @@ func (l *DeployVMInstanceLogic) DeployVMInstance(req *types.DeployVMInstanceReq)
 		PlanId:       req.PlanID,
 		Image:        req.Image,
 		BillingCycle: req.BillingCycle,
+		KeyId:        req.KeyId,
 	})
 	if err != nil {
 		return nil, err

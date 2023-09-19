@@ -16,6 +16,7 @@ type ServiceContext struct {
 	VmInstanceModel      model.VmInstanceModel
 	IpGroupModel         model.IpGroupModel
 	IpAddressModel       model.IpAddressModel
+	SshKeysModel         model.SshKeysModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -30,5 +31,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		VmInstanceModel:      model.NewVmInstanceModel(sqlConn),
 		IpGroupModel:         model.NewIpGroupModel(sqlConn),
 		IpAddressModel:       model.NewIpAddressModel(sqlConn),
+		SshKeysModel:         model.NewSshKeysModel(sqlConn),
 	}
 }

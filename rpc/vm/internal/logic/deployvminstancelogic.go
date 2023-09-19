@@ -49,6 +49,11 @@ func (l *DeployVMInstanceLogic) DeployVMInstance(in *vm.DeployVMInstanceReq) (*v
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.ORDER_PLAN_NOT_FOUND), "get vm plan failed: %v", err)
 	}
 
+	sshKey, err := l.svcCtx.SshKeysModel.FindOne(l.ctx, nil, in.SshKeyId)
+	if err != nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.INVALID_SSH_KEY), "get ssh key failed: %v", err)
+	}
+
 	// 先创建数据库记录，分配IP （使用事务）
 	// 然后再实际创建虚拟机
 	var instance *model.VmInstance
@@ -184,7 +189,7 @@ func (l *DeployVMInstanceLogic) DeployVMInstance(in *vm.DeployVMInstanceReq) (*v
 		return nil, err
 	}
 	// 6. 设置用户 SSH 公钥
-	err = hypervisor.SetSSHKey(newVM, tools.RawURLEncode(in.SshKey))
+	err = hypervisor.SetSSHKey(newVM, tools.RawURLEncode(sshKey.Content))
 	if err != nil {
 		return nil, err
 	}

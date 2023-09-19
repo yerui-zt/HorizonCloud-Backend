@@ -37,20 +37,21 @@ func (l *CreateVMDeployOrderLogic) CreateVMDeployOrder(in *order.CreateVMDeployO
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.USER_NOT_FOUND_ERROR), "find user by id error [id: %d]", in.Uid)
 	}
-
 	plan, err := l.svcCtx.VmPlanModel.FindOne(l.ctx, nil, in.PlanId)
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.ORDER_PLAN_NOT_FOUND), "find plan by id error [id: %d]", in.PlanId)
 	}
-
 	osImage, err := l.svcCtx.VmTemplateModel.FindOneByName(l.ctx, in.Image)
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.ORDER_VM_IMAGE_NOT_FOUND), "find vm template by name error [name: %s]", in.Image)
 	}
-
 	vmGroup, err := l.svcCtx.HypervisorGroupModel.FindOne(l.ctx, nil, in.VmGroupId)
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.ORDER_VM_GROUP_NOT_FOUND), "find vm group by id error [id: %d]", in.VmGroupId)
+	}
+	sshKey, err := l.svcCtx.SshKeysModel.FindOne(l.ctx, nil, in.KeyId)
+	if err != nil {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.INVALID_SSH_KEY), "find ssh key by id error [id: %d]", in.KeyId)
 	}
 
 	var newOrder *model.Order
@@ -86,9 +87,10 @@ func (l *CreateVMDeployOrderLogic) CreateVMDeployOrder(in *order.CreateVMDeployO
 		// 创建content
 		dueDate := tools.CalculateDueDate(now, in.BillingCycle)
 		content, err := json.Marshal(&order.OrderItemContentVMCreateContent{
-			Plan:    plan.Name,
-			VMGroup: vmGroup.Name,
-			OSImage: osImage.Name,
+			Plan:       plan.Name,
+			VMGroup:    vmGroup.Name,
+			OSImage:    osImage.Name,
+			SSHKeyName: sshKey.Name,
 			ServicePeriod: fmt.Sprintf("%s ~ %s",
 				now.Format("2006-01-02"),
 				dueDate.Format("2006-01-02")),
@@ -103,6 +105,7 @@ func (l *CreateVMDeployOrderLogic) CreateVMDeployOrder(in *order.CreateVMDeployO
 			PlanID:            plan.Id,
 			OSImageID:         osImage.Id,
 			BillingCycle:      in.BillingCycle,
+			SSHKeyId:          sshKey.Id,
 		})
 		if err != nil {
 			return errors.Wrapf(xerr.NewErrCode(xerr.SERVER_COMMON_ERROR), "marshal order item action failed [err: %v]", err)

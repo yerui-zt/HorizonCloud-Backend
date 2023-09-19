@@ -50,6 +50,7 @@ func (l *OrderExecActionMqHandler) ProcessTask(ctx context.Context, t *asynq.Tas
 			GroupId:      action.HypervisorGroupId,
 			PlanId:       action.PlanID,
 			UserId:       findOrder.UserId,
+			SshKeyId:     action.SSHKeyId,
 		})
 		if err != nil {
 			return err
