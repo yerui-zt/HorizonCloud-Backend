@@ -3,13 +3,11 @@ package logic
 import (
 	"HorizonX/common/xerr"
 	"HorizonX/model"
+	"HorizonX/rpc/order/internal/svc"
+	"HorizonX/rpc/order/order"
 	"HorizonX/rpc/payment/payment"
 	"context"
 	"github.com/pkg/errors"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
-
-	"HorizonX/rpc/order/internal/svc"
-	"HorizonX/rpc/order/order"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -73,28 +71,39 @@ func (l *PayOrderLogic) PayOrder(in *order.PayOrderReq) (*order.PayOrderResp, er
 }
 
 func (l *PayOrderLogic) payByBalance(user *model.User, o *model.Order) error {
-	err := l.svcCtx.OrderModel.Trans(l.ctx, func(context context.Context, session sqlx.Session) error {
-		// 扣除余额
-		user.Balance -= o.TotalAmount
-		_, err := l.svcCtx.UserModel.Update(l.ctx, session, user)
-		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update user balance failed [%s]", err.Error())
-		}
+	// todo: remove this
+	//err := l.svcCtx.OrderModel.Trans(l.ctx, func(context context.Context, session sqlx.Session) error {
+	//	// 扣除余额
+	//	user.Balance -= o.TotalAmount
+	//	_, err := l.svcCtx.UserModel.Update(l.ctx, session, user)
+	//	if err != nil {
+	//		return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update user balance failed [%s]", err.Error())
+	//	}
+	//
+	//	// 更新订单状态
+	//	o.Status = "paid"
+	//	o.PaymentMethod = "balance"
+	//	_, err = l.svcCtx.OrderModel.Update(l.ctx, nil, o)
+	//	if err != nil {
+	//		return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update order status failed [%s]", err.Error())
+	//	}
+	//	return nil
+	//})
+	//if err != nil {
+	//	return err
+	//}
 
-		// 更新订单状态
-		o.Status = "paid"
-		o.PaymentMethod = "balance"
-		_, err = l.svcCtx.OrderModel.Update(l.ctx, nil, o)
-		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update order status failed [%s]", err.Error())
-		}
-		return nil
+	// todo: 履行订单 - 待测试
+	fullFillOrderLogic := NewFullFillOrderLogic(l.ctx, l.svcCtx)
+	_, err := fullFillOrderLogic.FullFillOrder(&order.FullFillOrderReq{
+		OrderNo:    o.OrderNo,
+		CallbackNo: "",
+		Method:     "balance",
 	})
 	if err != nil {
 		return err
+	} else {
+		return nil
 	}
 
-	// todo: 履行订单
-
-	return nil
 }
