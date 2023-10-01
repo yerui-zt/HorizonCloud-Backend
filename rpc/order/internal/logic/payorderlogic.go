@@ -8,6 +8,7 @@ import (
 	"HorizonX/rpc/payment/payment"
 	"context"
 	"github.com/pkg/errors"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -42,14 +43,14 @@ func (l *PayOrderLogic) PayOrder(in *order.PayOrderReq) (*order.PayOrderResp, er
 	}
 
 	//判断余额是否足够，如果足够调用 payByBalance
-	//如果不够，调用 支付接口
+	//如果不够，调用 支付接口获取支付url
 	if user.Balance >= findOrder.TotalAmount && findOrder.Type != "addFunds" {
 		err := l.payByBalance(user, findOrder)
 		if err != nil {
 			return nil, err
 		}
 		return &order.PayOrderResp{
-			Url: "",
+			Url: "nil",
 		}, nil
 	}
 
@@ -71,39 +72,25 @@ func (l *PayOrderLogic) PayOrder(in *order.PayOrderReq) (*order.PayOrderResp, er
 }
 
 func (l *PayOrderLogic) payByBalance(user *model.User, o *model.Order) error {
-	// todo: remove this
-	//err := l.svcCtx.OrderModel.Trans(l.ctx, func(context context.Context, session sqlx.Session) error {
-	//	// 扣除余额
-	//	user.Balance -= o.TotalAmount
-	//	_, err := l.svcCtx.UserModel.Update(l.ctx, session, user)
-	//	if err != nil {
-	//		return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update user balance failed [%s]", err.Error())
-	//	}
-	//
-	//	// 更新订单状态
-	//	o.Status = "paid"
-	//	o.PaymentMethod = "balance"
-	//	_, err = l.svcCtx.OrderModel.Update(l.ctx, nil, o)
-	//	if err != nil {
-	//		return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update order status failed [%s]", err.Error())
-	//	}
-	//	return nil
-	//})
-	//if err != nil {
-	//	return err
-	//}
 
-	// todo: 履行订单 - 待测试
-	fullFillOrderLogic := NewFullFillOrderLogic(l.ctx, l.svcCtx)
-	_, err := fullFillOrderLogic.FullFillOrder(&order.FullFillOrderReq{
-		OrderNo:    o.OrderNo,
-		CallbackNo: "",
-		Method:     "balance",
-	})
-	if err != nil {
-		return err
-	} else {
+	err := l.svcCtx.OrderModel.Trans(l.ctx, func(context context.Context, session sqlx.Session) error {
+		user.Balance -= o.TotalAmount
+		_, err := l.svcCtx.UserModel.Update(l.ctx, session, user)
+		if err != nil {
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "update user balance failed [%s]", err.Error())
+		}
+
+		fullFillOrderLogic := NewFullFillOrderLogic(l.ctx, l.svcCtx)
+		_, err = fullFillOrderLogic.FullFillOrder(&order.FullFillOrderReq{
+			OrderNo:    o.OrderNo,
+			CallbackNo: "",
+			Method:     "balance",
+		})
+		if err != nil {
+			return err
+		}
 		return nil
-	}
+	})
 
+	return err
 }
