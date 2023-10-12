@@ -1,16 +1,16 @@
 # HorizonCloud-Backend
 
-**基于 go-zero + Vue 的云平台（虚拟机）的管理与销售系统**
+基于 go-zero + Vue 的云平台（虚拟机）的管理与销售系统
 
 ## 技术栈/库：
 
 - go-zero
-- mysql
-- redis
-- go-validator 参数校验库
-- go-jwtv5 jwt认证库
-- go-proxmox：proxmox api集成
-- asynq：go实现的基于redis的任务队列
+- mysql 
+- redis 
+- go-validator
+- go-jwtv5 
+- go-proxmox
+- asynq
 - ...
 
 
