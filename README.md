@@ -1,7 +1,6 @@
 # HorizonCloud-Backend
 
-**基于 go-zero + Vue 的云平台（虚拟机）的管理与销售系统
-**
+**基于 go-zero + Vue 的云平台（虚拟机）的管理与销售系统**
 
 ## 技术栈/库：
 
